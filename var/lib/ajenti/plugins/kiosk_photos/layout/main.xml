@@ -1,0 +1,53 @@
+<vc>
+	<body>
+		<pad>
+		<bind:dict bind="classconfig">
+			<tabs>
+				<tab title="Режим Снимки">
+					<formgroup text="Включване на режим снимки">
+						<label text="Ако включите този режим, моля уверете се, че режим браузър и режим видео са изключени!" />
+						<formline>
+							<checkbox text="Включи режим Снимки" bind="xscreensaver_enable" />
+						</formline>
+						<label text="За да добавите снимки, ползвайте файловият мениджър. Снимките, добавяйте в /home/kiosk/screensavers/" />
+					</formgroup>
+				</tab>
+				<tab title="Слайдшоу настройки">
+					<formgroup text="Duration">
+						<label text="Колко време (в секунди) да се показва снимката, преди да се зареди нова." />
+						<formline text="По подразбиране е 30">
+							<textbox bind="glslideshow_duration" />
+						</formline>
+					</formgroup>
+					<formgroup text="Pan">
+						<label text="Колко време (в секунди) да трае ефектът pan-and-zoom. Трябва да е повече от Fade." />
+						<formline text="По подразбиране е 6">
+							<textbox bind="glslideshow_pan" />
+						</formline>
+					</formgroup>
+					<formgroup text="Fade">
+						<label text="Колко дълго да продължава ефектът cross-fade (при смяна на снимките). Трябва да е по-малко от Pan." />
+						<formline text="По подразбиране е 2">
+							<textbox bind="glslideshow_fade" />
+						</formline>
+					</formgroup>
+					<formgroup text="Zoom">
+						<label text="Да се използва ли zoom (в проценти). Ако е 100%, pan ефекта ще се изключи." />
+						<formline text="По подразбиране е 75">
+							<textbox bind="glslideshow_zoom" />
+						</formline>
+					</formgroup>
+					<formgroup text="Letterbox/Clip">
+						<label text="Ако се използва ефекта clip, ако снимката не е със същия aspect ratio като монитора, снимката ще бъде изрязана за да запълни монитора." />
+						<label text="Ако се използва ефекта letterbox, около снимката ще бъдат добавени черни ленти (от ляво, дясно, горе и долу) така, че да може да се вижда цялата снимка." />
+						<formline text="Ползвай Clip">
+							<checkbox text="По подразбиране е Letterbox" bind="glslideshow_clip" />
+						</formline>
+					</formgroup>
+				</tab>
+			</tabs>
+		</bind:dict>
+		</pad>
+	</body>
+	<button id="save" text="{Запази}" icon="hdd" />
+</vc>

@@ -1,0 +1,34 @@
+<box xmlns:dashboard="dashboard">
+    <vc>
+        <body>
+            <dashboard:header id="header">
+                <hc>
+                    <tooltip text="{Презареди}">
+                        <togglebutton icon="refresh" style="mini" id="refresh-button" />
+                    </tooltip>
+                    <tooltip text="{Автоматично презареждане}">
+                        <togglebutton icon="time" style="mini" id="auto-refresh-button" />
+                    </tooltip>
+                </hc>
+            </dashboard:header>
+        </body>
+
+        <dashboard:dash id="dash" />
+
+        <dialog id="add-dialog" buttons="[{'text': _('Cancel'), 'id': 'cancel'}]" visible="False">
+            <bind:collection id="add-widgets">
+                <pad>
+                    <list bind="__items" />
+                </pad>
+                <bind:template>
+                    <listitem id="listitem">
+                        <hc>
+                            <icon bind="icon" />
+                            <label bind="name" id="button" />
+                        </hc>
+                    </listitem>
+                </bind:template>
+            </bind:collection>
+        </dialog>
+    </vc>
+</box>

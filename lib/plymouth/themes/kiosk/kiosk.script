@@ -1,0 +1,16 @@
+wallpaper_image = Image("LOGO_dig.png");
+screen_width = Window.GetWidth();
+screen_height = Window.GetHeight();
+resized_wallpaper_image = wallpaper_image.Scale(screen_width,screen_height);
+wallpaper_sprite = Sprite(resized_wallpaper_image);
+wallpaper_sprite.SetZ(-100);
+
+message_sprite = Sprite();
+message_sprite.SetPosition(screen_width * 0.2, screen_height * 0.6, 10000);
+
+fun message_callback (text) {
+    my_image = Image.Text(text, 0, 0, 0);
+    message_sprite.SetImage(my_image);
+}
+
+Plymouth.SetUpdateStatusFunction(message_callback);

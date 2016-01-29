@@ -1,0 +1,20 @@
+<vc>
+	<body>
+		<pad>
+		<bind:dict bind="classconfig">
+			<tabs>
+				<tab title="Режим Видео">
+					<formgroup text="Включване на режим Видео">
+						<label text="Ако включите този режим, моля уверете се, че режим браузър и режим снимки са изключени!" />
+						<formline>
+							<checkbox text="Включи режим Видео" bind="enable_videos" />
+						</formline>
+						<label text="За да добавите видео файл, ползвайте файловият мениджър. Файловете, добавяйте в /home/kiosk/videos/" />
+					</formgroup>
+				</tab>
+			</tabs>
+		</bind:dict>
+		</pad>
+	</body>
+	<button id="save" text="{Запази}" icon="hdd" />
+</vc>

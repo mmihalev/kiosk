@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Kiosk
+Description=Kiosk theme
+ModuleName=script
+
+[script]
+ImageDir=/lib/plymouth/themes/kiosk
+ScriptFile=/lib/plymouth/themes/kiosk/kiosk.script

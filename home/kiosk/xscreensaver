@@ -1,0 +1,14 @@
+# XScreenSaver Preferences File
+captureStderr:	False
+timeout:	0:00:10
+lock:		False
+splash:		False
+fade:		True
+fadeSeconds:	0:00:03
+fadeTicks:	20
+dpmsEnabled:	False
+chooseRandomImages: True
+imageDirectory:	/home/kiosk/screensavers
+mode:		one
+selected:	0
+programs:	glslideshow -root -duration 10 -fade 3 -zoom 100 -clip

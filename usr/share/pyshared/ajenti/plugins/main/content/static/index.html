@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html class="ui-light">
+    <head>
+        <meta charset='utf-8' />
+        <title>Kiosk Control Panel</title>
+        <link rel="stylesheet" href="/ajenti:static/resources.css" />
+        <script src="/ajenti:static/resources.js"></script>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width, target-densitydpi=device-dpi" />
+
+        <!-- tablet mode -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <link rel="apple-touch-icon" href="/ajenti:static/main/webapp-icon.png"/>
+        <link rel="apple-touch-startup-image" href="/ajenti:static/main/webapp-icon.png">
+        <meta name="viewport" content="user-scalable=no">
+    </head>
+    
+    <body>
+        <div id="content-root" style="display: none">
+            <div id="ssl-alert">
+                <i class="icon-white icon-unlock"></i>
+                &nbsp;<b>Insecure communication</b>
+                <br/>
+                &nbsp;<span>Please set up SSL as soon as possible!</span>
+            </div>
+
+            <div id="header">
+                <div class="container">
+                    <div class="logo">
+                        <div class="text">
+                            <a href="javascript:;">Kiosk control</a>
+                            <div class="release"></div>
+                        </div>
+                    </div>
+
+                    <a class="logout" href="/ajenti:logout">Изход &nbsp; <i class="icon-off"></i></a>
+
+                    <div id="tab-headers">
+                        <a href="#"><i class="icon-home"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tabs">
+                <div id="tab-ajenti" class="page root">
+                </div>
+            </div>
+
+            <div id="notifications">
+            </div>
+            
+            <div id="loading">
+                <div class="wrapper">
+                    <div class="spinner one"></div>
+                    <div class="spinner two"></div>
+                    <div class="message"></div>
+                </div>
+            </div>
+
+            <div id="crash" class="full-overlay">
+                <div class="content">
+                    <div class="inner">
+                        <h1>Crashed</h1>
+                        <pre id="crash-traceback">Blah blah</pre>
+                        <div id="crash-report" style="display:none">
+                        </div>
+                        <br class="clear" />
+                        <div class="control hc" style="float:left">
+                        </div>
+                        <div class="control hc" style="float:right">
+                            <div>
+                                <a onclick="document.location='/'" href="#" class="control button style-normal"><i class="icon-repeat"></i> Reload page</a>
+                            </div>
+                            <div>
+                                <a onclick="ajentiCrashResume()" href="#" class="control button style-normal"><i class="icon-chevron-right"></i> Continue</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="security-error" class="full-overlay">
+                <div class="content">
+                    <div class="inner">
+                        <h1>Access denied</h1>
+                        
+                        <br class="clear" />
+                        <div class="control hc" style="float:right">
+                            <a onclick="document.location='/'" href="#" class="control button style-normal"><i class="icon-repeat"></i> Reload page</a>
+                            <a onclick="ajentiSecurityResume()" href="#" class="control button style-normal"><i class="icon-chevron-right"></i> Continue</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="connection-error" class="full-overlay">
+                <div class="content">
+                    <div class="inner">
+                        <img class="icon icon-spin" src="/ajenti:static/main/icon-connecting.png" />
+                        <h1>Reconnecting</h1>
+                    </div>
+                </div>
+            </div>
+
+            <a id="ui-theme-toggle">
+                <i class="icon-lightbulb"></i>
+            </a>
+
+            <script>
+                Stream = new Stream();
+                Stream.start();
+                UI = new UIManager(window.Stream);
+            </script>
+        </div>
+
+        <style>
+            #content-root-no-css {
+                font-family: sans-serif;
+                color: #888;
+                text-align: center;
+            }
+
+            #content-root-no-css code {
+                font-family: monospace; 
+            }
+        </style>
+        
+        <div id="content-root-no-css">
+            <img src="/ajenti:static/main/error.jpeg" />
+            <br/>
+            <p>
+                Your Ajenti instance is missing compiled CSS files.
+            </p>
+            <p>
+                If you are running Ajenti in a development environment, run <code>make run</code>.
+            </p>
+            <p>
+                If not, your installation package was probably broken.
+            </p>
+        </div>
+    </body>
+</html>
