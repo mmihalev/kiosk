@@ -1,0 +1,79 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:       nodm
+# Should-Start:   console-screen kbd hal bluetooth
+# Required-Start: $remote_fs
+# Required-Stop:
+# Default-Start:  2 3 4 5
+# Default-Stop:
+# Short-Description: No Display Manager
+### END INIT INFO
+
+
+set -e
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DESC="Automatic Display Manager"
+NAME=nodm
+PIDDIR=/var/run/
+PIDFILE=${PIDDIR}/${NAME}.pid
+
+NODM_ENABLED=no
+NODM_XINIT=/usr/bin/xinit
+NODM_FIRST_VT=7
+NODM_XSESSION=/etc/X11/Xsession
+NODM_X_OPTIONS="-nolisten tcp"
+NODM_USER=root
+NODM_MIN_SESSION_TIME=60
+
+if [ -f /etc/default/$NAME ]
+then
+	. /etc/default/$NAME
+fi
+
+export NODM_XINIT NODM_XSESSION NODM_X_OPTIONS NODM_USER NODM_MIN_SESSION_TIME NODM_FIRST_VT
+
+# If you change the user to a non-root user, make sure you
+# set allowed_users=anybody in /etc/X11/Xwrapper.config
+
+# Gracefully exit if the package or its dependencies have been removed (but not purged).
+[ -x /usr/sbin/nodm ] || exit 0
+
+
+# Load the VERBOSE setting and other rcS variables
+. /lib/init/vars.sh
+
+# Define LSB log_* functions.
+. /lib/lsb/init-functions
+
+
+case "$1" in
+	start)
+		[ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+		if [ "$NODM_ENABLED" = "no" ] || [ "$NODM_ENABLED" = "false" ]
+		then
+			log_warning_msg "Not starting $NAME because NODM_ENABLED is '$NODM_ENABLED' in /etc/default/$NAME"
+		else
+			plymouth --wait --quit || true
+			start-stop-daemon --start --oknodo --pidfile ${PIDFILE} --make-pidfile --background --exec /usr/sbin/nodm
+		fi
+		[ "$VERBOSE" != no ] && log_end_msg $?
+		;;
+	stop)
+		[ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
+		start-stop-daemon --stop --pidfile ${PIDFILE} --oknodo
+		rm -f ${PIDFILE}
+		[ "$VERBOSE" != no ] && log_end_msg $?
+		;;
+	restart|force-reload)
+		$0 stop
+		$0 start
+		;;
+	*)
+		log_success_msg "Usage: $0 {start|stop|restart|force-reload}" >&2
+		exit 1
+		;;
+esac
+
+
+exit 0
