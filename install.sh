@@ -155,32 +155,32 @@ apt-get -q=2 install --no-install-recommends alsa > /dev/null
 adduser kiosk audio
 echo -e "\n${green}Done!${NC}\n"
 
-echo -e "${red}Installing print server...${NC}\n"
-tasksel install print-server > /dev/null
-usermod -aG lpadmin administrator
-usermod -aG lp,sys kiosk
-echo '
-LogLevel debug
-SystemGroup lpadmin
-Port 80
-Listen /var/run/cups/cups.sock
-Browsing On
-BrowseOrder allow,deny
-BrowseAddress @LOCAL
-<Location />
-  Order allow,deny
-  Allow all
-</Location>
-<Location /admin>
-  Order allow,deny
-  Allow all
-</Location>
-<Location /admin/conf>
-  Order allow,deny
-  Allow all
-</Location>
-'  > /etc/cups/cupsd.conf
-echo -e "${green}Done!${NC}\n"
+#echo -e "${red}Installing print server...${NC}\n"
+#tasksel install print-server > /dev/null
+#usermod -aG lpadmin administrator
+#usermod -aG lp,sys kiosk
+#echo '
+#LogLevel debug
+#SystemGroup lpadmin
+#Port 80
+#Listen /var/run/cups/cups.sock
+#Browsing On
+#BrowseOrder allow,deny
+#BrowseAddress @LOCAL
+#<Location />
+#  Order allow,deny
+#  Allow all
+#</Location>
+#<Location /admin>
+#  Order allow,deny
+#  Allow all
+#</Location>
+#<Location /admin/conf>
+#  Order allow,deny
+#  Allow all
+#</Location>
+#'  > /etc/cups/cupsd.conf
+#echo -e "${green}Done!${NC}\n"
 
 echo -e "${red}Installing touchscreen support...${NC}\n"
 apt-get -q=2 install --no-install-recommends xserver-xorg-input-multitouch xinput-calibrator > /dev/null
