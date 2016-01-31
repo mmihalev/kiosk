@@ -59,18 +59,18 @@ sed -i -e 's/NODM_USER=root/NODM_USER=kiosk/g' /etc/default/nodm
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/init.d/nodm -O /etc/init.d/nodm
 echo -e "${green}Done!${NC}\n"
 
+# Create .xscreensaver
 echo -e "${red}Installing and configuring the screensaver...${NC}\n"
 apt-get -q=2 install --no-install-recommends xscreensaver xscreensaver-data-extra xscreensaver-gl-extra libwww-perl > /dev/null
-
-# Create .xscreensaver
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/xscreensaver -O /home/kiosk/.xscreensaver
 
 # Create the screensaver directory
 mkdir /home/kiosk/screensavers
+echo -e "\n${green}Done!${NC}\n"
 
 # Add a sample image
 #wget -q http://beginwithsoftware.com/wallpapers/archive/Various/images/free_desktop_wallpaper_logo_space_for_rent_1024x768.gif -O /home/kiosk/screensavers/deleteme.gif
-echo -e "\n${green}Done!${NC}\n"
+#echo -e "\n${green}Done!${NC}\n"
 
 echo -e "${red}Installing ${blue}Chrome${red} browser...${NC}\n"
 echo "
