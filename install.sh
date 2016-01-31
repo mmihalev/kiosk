@@ -56,6 +56,7 @@ useradd kiosk -m -d /home/kiosk -p `openssl passwd -crypt K10sk201`
 # Configure kiosk autologin
 sed -i -e 's/NODM_ENABLED=false/NODM_ENABLED=true/g' /etc/default/nodm
 sed -i -e 's/NODM_USER=root/NODM_USER=kiosk/g' /etc/default/nodm
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/init.d/nodm -O /etc/init.d/nodm
 echo -e "${green}Done!${NC}\n"
 
 echo -e "${red}Installing and configuring the screensaver...${NC}\n"
