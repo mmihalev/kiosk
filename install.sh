@@ -191,6 +191,7 @@ apt-get -q=2 install pulseaudio > /dev/null
 apt-get -q=2 install pulseaudio-module-x11 > /dev/null
 apt-get -q=2 install libvdpau* > /dev/null
 apt-get -q=2 install alsa-utils > /dev/null
+apt-fet -q=2 install mc > /dev/null
 
 echo -e "${green}Done!${NC}\n"
 
