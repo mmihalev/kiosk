@@ -1,9 +1,28 @@
-wallpaper_image = Image("LOGO_dig.png");
+flower_image = Image("LOGO_dig.png");
+
+screen_ratio = Window.GetHeight() / Window.GetWidth();
+flower_image_ratio = flower_image.GetHeight() / flower_image.GetWidth();
+
+if (screen_ratio > flower_image_ratio)
+  {  # Screen ratio is taller than image ratio, we will match the screen height
+     scale_factor =  Window.GetHeight() / flower_image.GetHeight();
+  }
+else
+  {  # Screen ratio is wider than image ratio, we will match the screen width
+     scale_factor =  Window.GetWidth() / flower_image.GetWidth();
+  }
+
+scaled_flower_image = flower_image.Scale(flower_image.GetWidth()  * scale_factor,
+                                         flower_image.GetHeight() * scale_factor);
+flower_sprite = Sprite(scaled_flower_image); # Create the a sprite using the scaled image
+
+flower_sprite.SetX(Window.GetWidth()  / 2 - scaled_flower_image.GetWidth () / 2); # Place in the centre
+flower_sprite.SetY(Window.GetHeight() / 2 - scaled_flower_image.GetHeight() / 2);
+flower_sprite.SetZ(-10000); # Place right at the back
+
+
 screen_width = Window.GetWidth();
 screen_height = Window.GetHeight();
-resized_wallpaper_image = wallpaper_image.Scale(screen_width,screen_height);
-wallpaper_sprite = Sprite(resized_wallpaper_image);
-wallpaper_sprite.SetZ(-100);
 
 message_sprite = Sprite();
 message_sprite.SetPosition(screen_width * 0.2, screen_height * 0.6, 10000);
