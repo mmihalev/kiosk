@@ -48,7 +48,7 @@ apt-get -q=2 install --no-install-recommends unclutter > /dev/null
 echo -e "\n${green}Done!${NC}\n"
 
 echo -e "${red}Creating administrator user...${NC}\n"
-useradd kiosk -m -d /home/administrator -p `openssl passwd -crypt ISdjE830dj2Dm#d`
+useradd administrator -m -d /home/administrator -p `openssl passwd -crypt ISdjE830`
 
 echo -e "${red}Creating kiosk user...${NC}\n"
 useradd kiosk -m -d /home/kiosk -p `openssl passwd -crypt K10sk201`
