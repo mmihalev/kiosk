@@ -66,7 +66,7 @@ videos_switches=`cat /home/kiosk/.kiosk/videos_switches.cfg`
 #sh /home/kiosk/.kiosk/browser_killer.sh &
 
 # Start window manager
-matchbox-window-manager &
+matchbox-window-manager -use_titlebar no &
 
 # Relaunch browser if closed
 while true; do
@@ -91,7 +91,7 @@ while true; do
 
 	if [ $enable_videos = "True" ]
 	then
-	    export DISPLAY=:0
+	    #export DISPLAY=:0
 	    mplayer $videos_switches
 	fi
 

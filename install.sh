@@ -103,16 +103,17 @@ wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/kiosk
 apt-get -q=2 install --no-install-recommends xprintidle > /dev/null
 chmod +x /home/kiosk/.kiosk/browser_killer.sh
 
+# Mplayer
+echo -e "${red}Installing video player ${blue}mplayer${red}...${NC}\n"
+apt-get -q=2 install mplayer > /dev/null
+mkdir /home/kiosk/videos
+echo -e "${green}Done!${NC}\n"
+
 # Set correct user and group permissions for /home/kiosk
 chown -R kiosk:kiosk /home/kiosk/
 echo -e "${green}Done!${NC}\n"
 
-# Mplayer
-echo -e "${red}Installing video player ${blue}mplayer${red}...${NC}\n"
-apt-get -q=2 install mplayer > /dev/null
-echo -e "${green}Done!${NC}\n"
-
-
+# Kiosk Web Control (Ajenti)
 echo -e "${red}Adding the browser-based system administration tool ${blue}Kiosk web control${red}...${NC}\n"
 wget -q http://repo.ajenti.org/debian/key -O- | apt-key add -
 echo '
@@ -208,6 +209,8 @@ update-alternatives --install /lib/plymouth/themes/default.plymouth default.plym
 #update-alternatives --config default.plymouth
 update-initramfs -u
 echo -e "${green}Done!${NC}\n"
+
+# Prevent sleeping for inactivity
 
 # administrator password
 #echo -e "${red}Changing administrator password...${NC}\n"
