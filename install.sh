@@ -152,10 +152,6 @@ apt-get -q=2 install nginx > /dev/null
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/nginx/sites-enabled/default -O /etc/nginx/sites-available/default
 echo -e "\n${green}Done!${NC}\n"
 
-echo -e "${red}Installing audio...${NC}\n"
-apt-get -q=2 install --no-install-recommends alsa > /dev/null
-adduser kiosk audio
-echo -e "\n${green}Done!${NC}\n"
 
 #echo -e "${red}Installing print server...${NC}\n"
 #tasksel install print-server > /dev/null
@@ -188,12 +184,19 @@ echo -e "${red}Installing touchscreen support...${NC}\n"
 apt-get -q=2 install --no-install-recommends xserver-xorg-input-multitouch xinput-calibrator > /dev/null
 echo -e "${green}Done!${NC}\n"
 
+echo -e "${red}Installing audio...${NC}\n"
+apt-get -q=2 install --no-install-recommends alsa > /dev/null
+adduser kiosk audio
+echo -e "\n${green}Done!${NC}\n"
+
 echo -e "${red}Installing 3rd party software...${NC}\n"
 apt-get -q=2 install pulseaudio > /dev/null
 apt-get -q=2 install pulseaudio-module-x11 > /dev/null
 apt-get -q=2 install libvdpau* > /dev/null
 apt-get -q=2 install alsa-utils > /dev/null
 apt-fet -q=2 install mc > /dev/null
+
+for x in `amixer controls  | grep layback` ; do amixer cset "${x}" on ; done
 
 echo -e "${green}Done!${NC}\n"
 
