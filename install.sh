@@ -190,13 +190,14 @@ adduser kiosk audio
 echo -e "\n${green}Done!${NC}\n"
 
 echo -e "${red}Installing 3rd party software...${NC}\n"
-apt-get -q=2 install pulseaudio > /dev/null
-apt-get -q=2 install pulseaudio-module-x11 > /dev/null
+#apt-get -q=2 install pulseaudio > /dev/null
+#apt-get -q=2 install pulseaudio-module-x11 > /dev/null
 apt-get -q=2 install libvdpau* > /dev/null
 apt-get -q=2 install alsa-utils > /dev/null
 apt-fet -q=2 install mc > /dev/null
 
-for x in `amixer controls  | grep layback` ; do amixer cset "${x}" on ; done
+#for x in `amixer controls  | grep layback` ; do amixer cset "${x}" on ; done
+#amixer scontrols | grep -oE "'.*'" | awk -F\' '{print "amixer -c 0 set \""$2"\" unmute"}' | sh
 
 echo -e "${green}Done!${NC}\n"
 

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Unmute all audio channels
+amixer scontrols | grep -oE "'.*'" | awk -F\' '{print "amixer -c 0 set \""$2"\" unmute"}' | sh
+
 # Import variables
 . /home/kiosk/.kiosk/screensaver.cfg
 . /home/kiosk/.kiosk/browser.cfg
@@ -93,7 +96,7 @@ while true; do
 	if [ $enable_videos = "True" ]
 	then
 		export DISPLAY=:0
-	    mplayer volume=$video_volume $videos_switches
+	    mplayer -volume $video_volume $videos_switches
 	fi
 
 	sleep 5s
