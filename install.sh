@@ -211,6 +211,9 @@ update-initramfs -u
 echo -e "${green}Done!${NC}\n"
 
 # Prevent sleeping for inactivity
+echo -e "${red}Prevent sleeping for inactivity...${NC}\n"
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/kbd/config -O /etc/kbd/config
+echo -e "${green}Done!${NC}\n"
 
 # administrator password
 #echo -e "${red}Changing administrator password...${NC}\n"
