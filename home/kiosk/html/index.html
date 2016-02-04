@@ -3,26 +3,21 @@
 <head>
 <title></title>
 <style>
-htmlZ{
-    background: url('LOGO_dig.png') no-repeat center center fixed;
-    --webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
 </style>
 <script type="text/javascript">
-	window.onload = function() {
-		var height = document.body.clientHeight;
-		var width = document.body.clientWidth;
-		document.getElementById("video").setAttribute("width", width +'px');
-		//document.getElementById("video").setAttribute("height", height +'px');
-	}
+        window.onload = function() {
+                var height = document.body.clientHeight;
+                var width = document.body.clientWidth;
+                document.getElementById("video").setAttribute("width", width +'px');
+                //document.getElementById("video").setAttribute("height", height +'px');
+                var vid = document.getElementById("video");
+                vid.volume = 0.5;
+        }
 </script>
 </head>
 <body>
-	<video id="video" height="100%" autoplay loop controls>
-		<source src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" type="video/mp4">
-	</video>
+        <video id="video" height="100%" autoplay loop>
+                <source src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" type="video/mp4">
+        </video>
 </body>
 </html>
