@@ -150,6 +150,9 @@ echo -e "${green}Done!${NC}\n"
 echo -e "${red}Installing ${blue}nginx${red} web server...${NC}\n"
 apt-get -q=2 install nginx > /dev/null
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/nginx/sites-enabled/default -O /etc/nginx/sites-available/default
+sed -i -e 's/www-data/kiosk/g' /etc/nginx/nginx.conf
+mkdir /home/kiosk/html
+chown -R kiosk.kiosk /home/kiosk/html
 echo -e "\n${green}Done!${NC}\n"
 
 
@@ -190,7 +193,7 @@ adduser kiosk audio
 echo -e "\n${green}Done!${NC}\n"
 
 echo -e "${red}Installing 3rd party software...${NC}\n"
-#apt-get -q=2 install pulseaudio > /dev/null
+apt-get -q=2 install pulseaudio > /dev/null
 #apt-get -q=2 install pulseaudio-module-x11 > /dev/null
 apt-get -q=2 install libvdpau* > /dev/null
 apt-get -q=2 install alsa-utils > /dev/null

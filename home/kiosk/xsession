@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Unmute all audio channels
-amixer scontrols | grep -oE "'.*'" | awk -F\' '{print "amixer -c 0 set \""$2"\" unmute"}' | sh
+xrandr --orientation right
 
 # Import variables
 . /home/kiosk/.kiosk/screensaver.cfg
@@ -90,7 +89,7 @@ while true; do
 	if [ $enable_browser = "True" ]
 	then
 		export DISPLAY=:0
-	    chromium-browser --kiosk $home_url
+	    chromium-browser --kiosk --disable-infobars --disable-session-crashed-bubble --agc-startup-min-volume=100 $home_url
 	fi
 
 	if [ $enable_videos = "True" ]
