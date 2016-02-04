@@ -197,10 +197,6 @@ echo -e "${red}Set correct user and group permissions for ${blue}/home/kiosk${re
 chown -R kiosk:kiosk /home/kiosk/
 echo -e "${green}Done!${NC}\n"
 
-# administrator password
-#echo -e "${red}Changing administrator password...${NC}\n"
-#echo -e "${green}Done!${NC}\n"
-
 #Choose kiosk mode
 echo -e "${green}Choose Kiosk Mode:${NC}"
 PS3="Type 1, 2 or 3:"
