@@ -3,4 +3,4 @@ Turn Ubuntu server into Kiosk
 
 # Installation
 
-Became root: ``sudo ./install.sh``
+Installation is automatically. Just run  ``sudo ./install.sh``
