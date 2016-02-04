@@ -109,10 +109,6 @@ apt-get -q=2 install mplayer > /dev/null
 mkdir /home/kiosk/videos
 echo -e "${green}Done!${NC}\n"
 
-# Set correct user and group permissions for /home/kiosk
-chown -R kiosk:kiosk /home/kiosk/
-echo -e "${green}Done!${NC}\n"
-
 # Kiosk Web Control (Ajenti)
 echo -e "${red}Adding the browser-based system administration tool ${blue}Kiosk web control${red}...${NC}\n"
 wget -q http://repo.ajenti.org/debian/key -O- | apt-key add -
@@ -155,34 +151,6 @@ mkdir /home/kiosk/html
 chown -R kiosk.kiosk /home/kiosk/html
 echo -e "\n${green}Done!${NC}\n"
 
-
-#echo -e "${red}Installing print server...${NC}\n"
-#tasksel install print-server > /dev/null
-#usermod -aG lpadmin administrator
-#usermod -aG lp,sys kiosk
-#echo '
-#LogLevel debug
-#SystemGroup lpadmin
-#Port 80
-#Listen /var/run/cups/cups.sock
-#Browsing On
-#BrowseOrder allow,deny
-#BrowseAddress @LOCAL
-#<Location />
-#  Order allow,deny
-#  Allow all
-#</Location>
-#<Location /admin>
-#  Order allow,deny
-#  Allow all
-#</Location>
-#<Location /admin/conf>
-#  Order allow,deny
-#  Allow all
-#</Location>
-#'  > /etc/cups/cupsd.conf
-#echo -e "${green}Done!${NC}\n"
-
 echo -e "${red}Installing touchscreen support...${NC}\n"
 apt-get -q=2 install --no-install-recommends xserver-xorg-input-multitouch xinput-calibrator > /dev/null
 echo -e "${green}Done!${NC}\n"
@@ -190,24 +158,28 @@ echo -e "${green}Done!${NC}\n"
 echo -e "${red}Installing audio...${NC}\n"
 apt-get -q=2 install --no-install-recommends alsa > /dev/null
 adduser kiosk audio
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/asoundrc -O /home/kiosk/.asoundrc
+chown kiosk.kiosk /home/kiosk/.asoundrc
 echo -e "\n${green}Done!${NC}\n"
 
 echo -e "${red}Installing 3rd party software...${NC}\n"
 apt-get -q=2 install pulseaudio > /dev/null
-#apt-get -q=2 install pulseaudio-module-x11 > /dev/null
 apt-get -q=2 install libvdpau* > /dev/null
 apt-get -q=2 install alsa-utils > /dev/null
 apt-fet -q=2 install mc > /dev/null
+echo -e "${green}Done!${NC}\n"
 
-#for x in `amixer controls  | grep layback` ; do amixer cset "${x}" on ; done
-#amixer scontrols | grep -oE "'.*'" | awk -F\' '{print "amixer -c 0 set \""$2"\" unmute"}' | sh
-
+# Crontab for fixing hdmi sound mute problem
+echo -e "${red}Crontab for fixing hdmi sound mute problem${NC}\n"
+echo '* * * * * /usr/bin/amixer set IEC958 unmute
+' > /var/spool/cron/crontabs/kiosk
+chown kiosk.crontab /var/spool/cron/crontabs/kiosk
 echo -e "${green}Done!${NC}\n"
 
 # Ubuntu loading theme
 echo -e "${red}Customizing base theme...${NC}\n"
 mkdir /lib/plymouth/themes/kiosk
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/lib/plymouth/themes/kiosk/LOGO_dig.png -O /lib/plymouth/themes/kiosk/LOGO_dig.png
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/lib/plymouth/themes/kiosk/dig.png -O /lib/plymouth/themes/kiosk/dig.png
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/lib/plymouth/themes/kiosk/kiosk.plymouth -O /lib/plymouth/themes/kiosk/kiosk.plymouth
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/lib/plymouth/themes/kiosk/kiosk.script -O /lib/plymouth/themes/kiosk/kiosk.script
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/initramfs-tools/scripts/functions -O /usr/share/initramfs-tools/scripts/functions
@@ -220,6 +192,11 @@ echo -e "${green}Done!${NC}\n"
 # Prevent sleeping for inactivity
 echo -e "${red}Prevent sleeping for inactivity...${NC}\n"
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/kbd/config -O /etc/kbd/config
+echo -e "${green}Done!${NC}\n"
+
+# Set correct user and group permissions for /home/kiosk
+echo -e "${red}Set correct user and group permissions for ${blue}/home/kiosk${red}...${NC}\n"
+chown -R kiosk:kiosk /home/kiosk/
 echo -e "${green}Done!${NC}\n"
 
 # administrator password
