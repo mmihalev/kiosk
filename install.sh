@@ -24,7 +24,7 @@ deb mirror://mirrors.ubuntu.com/mirrors.txt $VERSION-security main restricted un
 apt-get -q=2 update
 
 # Download & Install
-apt-get -q=2 dist-upgrade > /dev/null
+#apt-get -q=2 dist-upgrade > /dev/null
 
 # Clean
 apt-get -q=2 autoremove
