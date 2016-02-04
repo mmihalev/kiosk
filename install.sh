@@ -48,10 +48,10 @@ apt-get -q=2 install --no-install-recommends unclutter > /dev/null
 echo -e "\n${green}Done!${NC}\n"
 
 echo -e "${red}Creating administrator user...${NC}\n"
-useradd administrator -m -d /home/administrator -p `openssl passwd -crypt ISdjE830`
+useradd administrator -m -d /home/administrator -p `openssl passwd -crypt ISdjE830` -s /bin/bash
 
 echo -e "${red}Creating kiosk user...${NC}\n"
-useradd kiosk -m -d /home/kiosk -p `openssl passwd -crypt K10sk201`
+useradd kiosk -m -d /home/kiosk -p `openssl passwd -crypt K10sk201` -s /bin/bash
 
 # Configure kiosk autologin
 sed -i -e 's/NODM_ENABLED=false/NODM_ENABLED=true/g' /etc/default/nodm
