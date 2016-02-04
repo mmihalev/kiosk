@@ -167,6 +167,8 @@ apt-get -q=2 install pulseaudio > /dev/null
 apt-get -q=2 install libvdpau* > /dev/null
 apt-get -q=2 install alsa-utils > /dev/null
 apt-fet -q=2 install mc > /dev/null
+
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/pulse/default.pa -O /etc/pulse/default.pa
 echo -e "${green}Done!${NC}\n"
 
 # Crontab for fixing hdmi sound mute problem
