@@ -1,6 +1,6 @@
 #!/bin/bash
 
-xrandr --orientation left
+xrandr --orientation right
 
 # Import variables
 . /home/kiosk/.kiosk/screensaver.cfg
