@@ -1,17 +1,17 @@
 Window.SetBackgroundTopColor (255.00, 255.00, 255.00);
 Window.SetBackgroundBottomColor (255.00, 255.00, 255.00);
-logo.image = Image("dig.png");.
+logo.image = Image("dig.png");
 
-logo.sprite = Sprite (logo.image);.
+logo.sprite = Sprite (logo.image);
 
 
 logo.width = logo.image.GetWidth ();
 logo.height = logo.image.GetHeight ();
-logo.x = Window.GetX () + Window.GetWidth () / 2 - logo.width  / 2;.
+logo.x = Window.GetX () + Window.GetWidth () / 2 - logo.width  / 2;
 logo.y = Window.GetY () + Window.GetHeight () / 2 - logo.height / 2;
-logo.z = 1000;.
+logo.z = 1000;
 
-logo.sprite.SetX (logo.x);.
+logo.sprite.SetX (logo.x);
 logo.sprite.SetY (logo.y);
 logo.sprite.SetZ (logo.z);
 
