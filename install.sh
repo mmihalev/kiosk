@@ -176,8 +176,7 @@ echo -e "${green}Done!${NC}\n"
 
 # Crontab for fixing hdmi sound mute problem
 echo -e "${red}Crontab for fixing hdmi sound mute problem${NC}\n"
-echo '* * * * * /usr/bin/amixer set IEC958 unmute
-' > /var/spool/cron/crontabs/kiosk
+echo '* * * * * /usr/bin/amixer set IEC958 unmute' > /var/spool/cron/crontabs/kiosk
 chown kiosk.crontab /var/spool/cron/crontabs/kiosk
 echo -e "${green}Done!${NC}\n"
 
@@ -187,8 +186,7 @@ mkdir /lib/plymouth/themes/kiosk
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/lib/plymouth/themes/kiosk/dig.png -O /lib/plymouth/themes/kiosk/dig.png
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/lib/plymouth/themes/kiosk/kiosk.plymouth -O /lib/plymouth/themes/kiosk/kiosk.plymouth
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/lib/plymouth/themes/kiosk/kiosk.script -O /lib/plymouth/themes/kiosk/kiosk.script
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/initramfs-tools/scripts/functions -O /usr/share/initramfs-tools/scripts/functions
-
+#wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/initramfs-tools/scripts/functions -O /usr/share/initramfs-tools/scripts/functions
 update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/kiosk/kiosk.plymouth 100
 #update-alternatives --config default.plymouth
 update-initramfs -u
