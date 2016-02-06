@@ -73,7 +73,8 @@ wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/xscre
 mkdir /home/kiosk/screensavers
 echo -e "\n${green}Done!${NC}\n"
 
-echo -e "${red}Installing ${blue}Done${red} browser...${NC}\n"
+# Install Chromium browser
+echo -e "${red}Installing ${blue}Chromium${red} browser...${NC}\n"
 echo "
 # Ubuntu Partners
 deb http://archive.canonical.com/ $VERSION partner
