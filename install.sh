@@ -73,14 +73,14 @@ wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/xscre
 mkdir /home/kiosk/screensavers
 echo -e "\n${green}Done!${NC}\n"
 
-echo -e "${red}Installing ${blue}Chrome${red} browser...${NC}\n"
+echo -e "${red}Installing ${blue}Done${red} browser...${NC}\n"
 echo "
 # Ubuntu Partners
 deb http://archive.canonical.com/ $VERSION partner
 "  >> /etc/apt/sources.list
 apt-get -q=2 update
-apt-get -q=2 -y install --force-yes --no-install-recommends chromium-browser > /dev/null
-apt-get -q=2 install --no-install-recommends flashplugin-installer icedtea-7-plugin ttf-liberation > /dev/null # flash, java, and fonts
+apt-get -q=2 -y install --force-yes chromium-browser > /dev/null
+apt-get -q=2 install flashplugin-installer icedtea-7-plugin ttf-liberation > /dev/null # flash, java, and fonts
 echo -e "\n${green}Done!${NC}\n"
 
 # Kiosk scripts
@@ -275,14 +275,15 @@ sed -i "s/$old_hostname/$kiosk_name/g" /etc/hostname
 echo -e "${blue}Kiosk hostname set to: ${kiosk_name}${NC}"
 
 
-echo -e "${red}Adding the customized image installation maker ${blue}(Mondo Rescue)${red}...${NC}\n"
-wget -q -O - ftp://ftp.mondorescue.org/ubuntu/12.10/mondorescue.pubkey | apt-key add -
-echo '
-## Mondo Rescue
-deb ftp://ftp.mondorescue.org/ubuntu 14.04 contrib
-'  >> /etc/apt/sources.list
-apt-get -q=2 update && apt-get -q=2 install --no-install-recommends --force-yes mondo > /dev/null
-echo -e "${green}Done!${NC}\n"
+# Mondo Rescue
+#echo -e "${red}Adding the customized image installation maker ${blue}(Mondo Rescue)${red}...${NC}\n"
+#wget -q -O - ftp://ftp.mondorescue.org/ubuntu/12.10/mondorescue.pubkey | apt-key add -
+#echo '
+### Mondo Rescue
+#deb ftp://ftp.mondorescue.org/ubuntu 14.04 contrib
+#'  >> /etc/apt/sources.list
+#apt-get -q=2 update && apt-get -q=2 install --no-install-recommends --force-yes mondo > /dev/null
+#echo -e "${green}Done!${NC}\n"
 
 echo -e "${green}Reboot?${NC}"
 select yn in "Yes" "No"; do
