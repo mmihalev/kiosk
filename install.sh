@@ -33,6 +33,8 @@ echo -e "${green}Done!${NC}\n"
 
 echo -e "${red}Disabling root recovery mode...${NC}\n"
 sed -i -e 's/#GRUB_DISABLE_RECOVERY/GRUB_DISABLE_RECOVERY/g' /etc/default/grub
+sed -i -e 's/GRUB_DISTRIBUTOR=`lsb_release -i -s 2> \/dev\/null || echo Debian`/GRUB_DISTRIBUTOR=Kiosk/g' /etc/default/grub
+sed -i -e 's/GRUB_TIMEOUT=10/GRUB_TIMEOUT=4/g' /etc/default/grub
 update-grub
 echo -e "\n${green}Done!${NC}\n"
 
