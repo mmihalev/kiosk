@@ -197,7 +197,7 @@ echo -e "${green}Done!${NC}\n"
 
 # Set correct user and group permissions for /home/kiosk
 echo -e "${red}Set correct user and group permissions for ${blue}/home/kiosk${red}...${NC}\n"
-chown -R kiosk:kiosk /home/kiosk/
+chown -R kiosk.kiosk /home/kiosk/
 echo -e "${green}Done!${NC}\n"
 
 #Choose kiosk mode
