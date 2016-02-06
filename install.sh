@@ -51,11 +51,14 @@ echo -e "\n${green}Done!${NC}\n"
 
 echo -e "${red}Creating administrator user...${NC}\n"
 useradd administrator -m -d /home/administrator -p `openssl passwd -crypt ISdjE830` -s /bin/bash
+echo -e "${green}Done!${NC}\n"
 
 echo -e "${red}Creating kiosk user...${NC}\n"
 useradd kiosk -m -d /home/kiosk -p `openssl passwd -crypt K10sk201` -s /bin/bash
+echo -e "${green}Done!${NC}\n"
 
 # Configure kiosk autologin
+echo -e "${red}Configuring kiosk autologin...${NC}\n"
 sed -i -e 's/NODM_ENABLED=false/NODM_ENABLED=true/g' /etc/default/nodm
 sed -i -e 's/NODM_USER=root/NODM_USER=kiosk/g' /etc/default/nodm
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/init.d/nodm -O /etc/init.d/nodm
@@ -165,7 +168,7 @@ echo -e "${red}Installing 3rd party software...${NC}\n"
 apt-get -q=2 install pulseaudio > /dev/null
 apt-get -q=2 install libvdpau* > /dev/null
 apt-get -q=2 install alsa-utils > /dev/null
-apt-fet -q=2 install mc > /dev/null
+apt-get -q=2 install mc > /dev/null
 
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/pulse/default.pa -O /etc/pulse/default.pa
 echo -e "${green}Done!${NC}\n"
