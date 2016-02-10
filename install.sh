@@ -29,6 +29,8 @@ mplayer_installed=0
 ajenti_installed=0
 ajenti_plugins_installed=0
 nginx_installed=0
+php_installed=0
+website_downloaded=0
 touchscreen_installed=0
 audio_installed=0
 additional_software_installed=0
@@ -269,18 +271,54 @@ echo -e "${red}Installing ${blue}nginx${red} web server...${NC}\n"
 if [ "$nginx_installed" == 0 ]
 then
 apt-get -q=2 install nginx > /dev/null
+service nginx stop
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/nginx/sites-enabled/default -O /etc/nginx/sites-available/default
 sed -i -e 's/www-data/kiosk/g' /etc/nginx/nginx.conf
 mkdir /home/kiosk/html
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/html/index.html -O /home/kiosk/html/index.html
 chown -R kiosk.kiosk /home/kiosk/html
+service nginx start
 sed -i -e 's/nginx_installed=0/nginx_installed=1/g' stages.cfg
 echo -e "\n${green}Done!${NC}\n"
 else
 	echo -e "${blue}Nginx already installed. Skipping...${NC}\n"
 fi
 
+#PHP
+echo -e "${red}Installing ${blue}PHP${red}...${NC}\n"
+if [ "$php_installed" == 0 ]
+then
+apt-get -q=e install php5-cli php5-common php5-fpm php5-mysqlnd php5-mcrypt
+update-rc.d php5-fpm defaults
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/php5/fpm/php.ini -O /etc/php5/fpm/php.ini
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/php5/fpm/pool.d/www.conf -O /etc/php5/fpm/pool.d/www.conf
+service php5-fpm restart
+sed -i -e 's/php_installed=0/php_installed=1/g' stages.cfg
+echo -e "\n${green}Done!${NC}\n"
+else
+	echo -e "${blue}PHP already installed. Skipping...${NC}\n"
+fi
 
+
+
+# Website content
+echo -e "${red}Downloading ${blue}Website content${red}...${NC}\n"
+if [ "$website_downloaded" == 0 ]
+then
+wget -q https://dl.dropboxusercontent.com/u/47604729/kiosk_html.zip -O kiosk_html.zip
+unzip -qq kiosk_html.zip
+mv kiosk_html/* /home/kiosk/html/
+chown -R kiosk.kiosk /home/kiosk/html/*
+rm -rf kiosk_html*	
+service nginx restart
+service php5-fpm restart
+sed -i -e 's/website_downloaded=0/website_downloaded=1/g' stages.cfg
+echo -e "\n${green}Done!${NC}\n"
+else
+	echo -e "${blue}Website content already downloaded. Skipping...${NC}\n"
+fi	
+
+
+	
 echo -e "${red}Installing touchscreen support...${NC}\n"
 if [ "$touchscreen_installed" == 0 ]
 then
