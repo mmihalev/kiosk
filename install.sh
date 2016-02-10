@@ -1,17 +1,50 @@
 #!/bin/bash
 
-# Pretty colors
+# Define colors
 red='\e[0;31m'
 green='\e[1;32m'
 blue='\e[1;36m'
 NC='\e[0m' # No color
 
 clear
+
+
 # Determine Ubuntu Version Codename
 VERSION=$(lsb_release -cs)
 
-echo -e "${red}Installing operating system updates ${blue}(this may take a while)${red}...${NC}\n"
+# Check if stages.cfg exists. If not, created it. 
+if [ ! -f stages.cfg ]
+then
+echo 'updates_installed=0
+grub_recovery_disable=0
+wireless_enabled=0
+xorg_installed=0
+admin_created=0
+kiosk_created=0
+kiosk_autologin=0
+screensaver_installed=0
+chromium_installed=0
+kiosk_scripts=0
+mplayer_installed=0
+ajenti_installed=0
+ajenti_plugins_installed=0
+nginx_installed=0
+touchscreen_installed=0
+audio_installed=0
+additional_software_installed=0
+crontab_installed=0
+plymouth_theme_installed=0
+prevent_sleeping=0
+kiosk_permissions=0' > stages.cfg
+fi
 
+# Import stages config
+. stages.cfg
+
+
+echo -e "${red}Installing operating system updates ${blue}(this may take a while)${red}...${NC}\n"
+if [ "$updates_installed" == 0 ]
+then
 # Use mirror method
 sed -i "1i \
 deb mirror://mirrors.ubuntu.com/mirrors.txt $VERSION main restricted universe multiverse\n\
@@ -23,58 +56,111 @@ deb mirror://mirrors.ubuntu.com/mirrors.txt $VERSION-security main restricted un
 # Refresh
 apt-get -q=2 update
 
-# Download & Install
-#apt-get -q=2 dist-upgrade > /dev/null
-
 # Clean
 apt-get -q=2 autoremove
 apt-get -q=2 clean
+sed -i -e 's/updates_installed=0/updates_installed=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Updates already installed. Skipping...${NC}\n"
+fi
+
 
 echo -e "${red}Disabling root recovery mode...${NC}\n"
+if [ "$grub_recovery_disable" == 0 ]
+then
 sed -i -e 's/#GRUB_DISABLE_RECOVERY/GRUB_DISABLE_RECOVERY/g' /etc/default/grub
 sed -i -e 's/GRUB_DISTRIBUTOR=`lsb_release -i -s 2> \/dev\/null || echo Debian`/GRUB_DISTRIBUTOR=Kiosk/g' /etc/default/grub
 sed -i -e 's/GRUB_TIMEOUT=10/GRUB_TIMEOUT=4/g' /etc/default/grub
 update-grub
+sed -i -e 's/grub_recovery_disable=0/grub_recovery_disable=1/g' stages.cfg
 echo -e "\n${green}Done!${NC}\n"
+else
+	echo -e "${blue}Root recovery already disabled. Skipping...${NC}\n"
+fi
+
 
 echo -e "${red}Enabling secure wireless support...${NC}\n"
+if [ "$wireless_enabled" == 0 ]
+then
 apt-get -q=2 install --no-install-recommends wpasupplicant > /dev/null
+sed -i -e 's/wireless_enabled=0/wireless_enabled=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Wireless support already enabled. Skipping...${NC}\n"
+fi
+
 
 echo -e "${red}Installing a graphical user interface...${NC}\n"
+if [ "$xorg_installed" == 0 ]
+then
 apt-get -q=2 install --no-install-recommends xorg nodm matchbox-window-manager > /dev/null
 
 # Hide Cursor
 apt-get -q=2 install --no-install-recommends unclutter > /dev/null
+sed -i -e 's/xorg_installed=0/xorg_installed=1/g' stages.cfg
 echo -e "\n${green}Done!${NC}\n"
+else
+	echo -e "${blue}Xorg already installed. Skipping...${NC}\n"
+fi
+
 
 echo -e "${red}Creating administrator user...${NC}\n"
+if [ "$admin_created" == 0 ]
+then
 useradd administrator -m -d /home/administrator -p `openssl passwd -crypt ISdjE830` -s /bin/bash
+sed -i -e 's/admin_created=0/admin_created=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Administrator already created. Skipping...${NC}\n"
+fi
+
 
 echo -e "${red}Creating kiosk user...${NC}\n"
+if [ "$kiosk_created" == 0 ]
+then
 useradd kiosk -m -d /home/kiosk -p `openssl passwd -crypt K10sk201` -s /bin/bash
+sed -i -e 's/kiosk_created=0/kiosk_created=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Kiosk already created. Skipping...${NC}\n"
+fi
+
 
 # Configure kiosk autologin
 echo -e "${red}Configuring kiosk autologin...${NC}\n"
+if [ "$kiosk_autologin" == 0 ]
+then
 sed -i -e 's/NODM_ENABLED=false/NODM_ENABLED=true/g' /etc/default/nodm
 sed -i -e 's/NODM_USER=root/NODM_USER=kiosk/g' /etc/default/nodm
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/init.d/nodm -O /etc/init.d/nodm
+sed -i -e 's/kiosk_autologin=0/kiosk_autologin=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Kiosk autologin already configured. Skipping...${NC}\n"
+fi
+
 
 # Create .xscreensaver
 echo -e "${red}Installing and configuring the screensaver...${NC}\n"
+if [ "$screensaver_installed" == 0 ]
+then
 apt-get -q=2 install --no-install-recommends xscreensaver xscreensaver-data-extra xscreensaver-gl-extra libwww-perl > /dev/null
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/xscreensaver -O /home/kiosk/.xscreensaver
 
 # Create the screensaver directory
 mkdir /home/kiosk/screensavers
+sed -i -e 's/screensaver_installed=0/screensaver_installed=1/g' stages.cfg
 echo -e "\n${green}Done!${NC}\n"
+else
+	echo -e "${blue}Screensaver already configured. Skipping...${NC}\n"
+fi
+
 
 # Install Chromium browser
 echo -e "${red}Installing ${blue}Chromium${red} browser...${NC}\n"
+if [ "$chromium_installed" == 0 ]
+then
 echo "
 # Ubuntu Partners
 deb http://archive.canonical.com/ $VERSION partner
@@ -82,10 +168,17 @@ deb http://archive.canonical.com/ $VERSION partner
 apt-get -q=2 update
 apt-get -q=2 -y install --force-yes chromium-browser > /dev/null
 apt-get -q=2 install flashplugin-installer icedtea-7-plugin ttf-liberation > /dev/null # flash, java, and fonts
+sed -i -e 's/chromium_installed=0/chromium_installed=1/g' stages.cfg
 echo -e "\n${green}Done!${NC}\n"
+else
+	echo -e "${blue}Chromium already installed. Skipping...${NC}\n"
+fi
+
 
 # Kiosk scripts
 echo -e "${red}Creating Kiosk Scripts...${NC}\n"
+if [ "$kiosk_scripts" == 0 ]
+then
 mkdir /home/kiosk/.kiosk
 
 # Create xsession
@@ -104,15 +197,30 @@ wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/kiosk
 # Create browser killer
 apt-get -q=2 install --no-install-recommends xprintidle > /dev/null
 chmod +x /home/kiosk/.kiosk/browser_killer.sh
+sed -i -e 's/kiosk_scripts=0/kiosk_scripts=1/g' stages.cfg
+echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Kiosk scripts already installed. Skipping...${NC}\n"
+fi
+
 
 # Mplayer
 echo -e "${red}Installing video player ${blue}mplayer${red}...${NC}\n"
+if [ "$mplayer_installed" == 0 ]
+then
 apt-get -q=2 install mplayer > /dev/null
 mkdir /home/kiosk/videos
+sed -i -e 's/mplayer_installed=0/mplayer_installed=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Mplayer already installed. Skipping...${NC}\n"
+fi
+
 
 # Kiosk Web Control (Ajenti)
 echo -e "${red}Adding the browser-based system administration tool ${blue}Kiosk web control${red}...${NC}\n"
+if [ "$ajenti_installed" == 0 ]
+then
 wget -q http://repo.ajenti.org/debian/key -O- | apt-key add -
 echo '
 ## Ajenti
@@ -132,56 +240,106 @@ wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshar
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/main/content/static/auth.html -O /usr/share/pyshared/ajenti/plugins/main/content/static/auth.html
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/main/content/static/index.html -O /usr/share/pyshared/ajenti/plugins/main/content/static/index.html
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/power/layout/widget.xml -O /usr/share/pyshared/ajenti/plugins/power/layout/widget.xml
-
+sed -i -e 's/ajenti_installed=0/ajenti_installed=1/g' stages.cfg
 echo -e "\n${green}Done!${NC}\n"
+else
+	echo -e "${blue}Kiosk web control already installed. Skipping...${NC}\n"
+fi
+
+
 
 echo -e "${red}Adding Kiosk plugins to Kiosk web control...${NC}\n"
+if [ "$ajenti_plugins_installed" == 0 ]
+then
 apt-get -q=2 install --no-install-recommends unzip > /dev/null
 wget -q https://github.com/mmihalev/Ajenti-Plugins/archive/master.zip -O kiosk_plugins-master.zip
 unzip -qq kiosk_plugins-master.zip
 mv Ajenti-Plugins-master/* /var/lib/ajenti/plugins/
 rm -rf Ajenti-Plugins-master
 rm -rf /var/lib/ajenti/plugins/sanickiosk_*
+sed -i -e 's/ajenti_plugins_installed=0/ajenti_plugins_installed=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Kiosk plugins already installed. Skipping...${NC}\n"
+fi
+
 
 #NGINX
 echo -e "${red}Installing ${blue}nginx${red} web server...${NC}\n"
+if [ "$nginx_installed" == 0 ]
+then
 apt-get -q=2 install nginx > /dev/null
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/nginx/sites-enabled/default -O /etc/nginx/sites-available/default
 sed -i -e 's/www-data/kiosk/g' /etc/nginx/nginx.conf
 mkdir /home/kiosk/html
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/html/index.html -O /home/kiosk/html/index.html
 chown -R kiosk.kiosk /home/kiosk/html
+sed -i -e 's/nginx_installed=0/nginx_installed=1/g' stages.cfg
 echo -e "\n${green}Done!${NC}\n"
+else
+	echo -e "${blue}Nginx already installed. Skipping...${NC}\n"
+fi
+
 
 echo -e "${red}Installing touchscreen support...${NC}\n"
+if [ "$touchscreen_installed" == 0 ]
+then
 apt-get -q=2 install --no-install-recommends xserver-xorg-input-multitouch xinput-calibrator > /dev/null
+sed -i -e 's/touchscreen_installed=0/touchscreen_installed=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Touchscreen support already installed. Skipping...${NC}\n"
+fi
 
 echo -e "${red}Installing audio...${NC}\n"
+if [ "$audio_installed" == 0 ]
+then
 apt-get -q=2 install --no-install-recommends alsa > /dev/null
 adduser kiosk audio
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/asoundrc -O /home/kiosk/.asoundrc
 chown kiosk.kiosk /home/kiosk/.asoundrc
+sed -i -e 's/audio_installed=0/audio_installed=1/g' stages.cfg
 echo -e "\n${green}Done!${NC}\n"
+else
+	echo -e "${blue}Audio already installed. Skipping...${NC}\n"
+fi
+
 
 echo -e "${red}Installing 3rd party software...${NC}\n"
+if [ "$additional_software_installed" == 0 ]
+then
 apt-get -q=2 install pulseaudio > /dev/null
 apt-get -q=2 install libvdpau* > /dev/null
 apt-get -q=2 install alsa-utils > /dev/null
 apt-get -q=2 install mc > /dev/null
 
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/pulse/default.pa -O /etc/pulse/default.pa
+sed -i -e 's/additional_software_installed=0/additional_software_installed=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}3rd party software already installed. Skipping...${NC}\n"
+fi
+
+
 
 # Crontab for fixing hdmi sound mute problem
+if [ "$crontab_installed" == 0 ]
+then
 echo -e "${red}Crontab for fixing hdmi sound mute problem${NC}\n"
 echo '* * * * * /usr/bin/amixer set IEC958 unmute' > /var/spool/cron/crontabs/kiosk
 chown kiosk.crontab /var/spool/cron/crontabs/kiosk
+sed -i -e 's/crontab_installed=0/crontab_installed=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Crontab already installed. Skipping...${NC}\n"
+fi
+
+
 
 # Ubuntu loading theme
 echo -e "${red}Customizing base theme...${NC}\n"
+if [ "$plymouth_theme_installed" == 0 ]
+then
 mkdir /lib/plymouth/themes/kiosk
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/lib/plymouth/themes/kiosk/dig.png -O /lib/plymouth/themes/kiosk/dig.png
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/lib/plymouth/themes/kiosk/kiosk.plymouth -O /lib/plymouth/themes/kiosk/kiosk.plymouth
@@ -190,17 +348,39 @@ wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/lib/plymouth/the
 update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/kiosk/kiosk.plymouth 100
 #update-alternatives --config default.plymouth
 update-initramfs -u
+sed -i -e 's/plymouth_theme_installed=0/plymouth_theme_installed=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Base theme already installed. Skipping...${NC}\n"
+fi
+
+
 
 # Prevent sleeping for inactivity
 echo -e "${red}Prevent sleeping for inactivity...${NC}\n"
+if [ "$prevent_sleeping" == 0 ]
+then
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/kbd/config -O /etc/kbd/config
+sed -i -e 's/prevent_sleeping=0/prevent_sleeping=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Prevent sleeping already done. Skipping...${NC}\n"
+fi
+
+
 
 # Set correct user and group permissions for /home/kiosk
 echo -e "${red}Set correct user and group permissions for ${blue}/home/kiosk${red}...${NC}\n"
+if [ "$kiosk_permissions" == 0 ]
+then
 chown -R kiosk.kiosk /home/kiosk/
+sed -i -e 's/kiosk_permissions=0/kiosk_permissions=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Permissions already set. Skipping...${NC}\n"
+fi
+
+
 
 #Choose kiosk mode
 echo -e "${green}Choose Kiosk Mode:${NC}"
@@ -273,16 +453,6 @@ fi
 sed -i "s/$old_hostname/$kiosk_name/g" /etc/hostname
 echo -e "${blue}Kiosk hostname set to: ${kiosk_name}${NC}"
 
-
-# Mondo Rescue
-#echo -e "${red}Adding the customized image installation maker ${blue}(Mondo Rescue)${red}...${NC}\n"
-#wget -q -O - ftp://ftp.mondorescue.org/ubuntu/12.10/mondorescue.pubkey | apt-key add -
-#echo '
-### Mondo Rescue
-#deb ftp://ftp.mondorescue.org/ubuntu 14.04 contrib
-#'  >> /etc/apt/sources.list
-#apt-get -q=2 update && apt-get -q=2 install --no-install-recommends --force-yes mondo > /dev/null
-#echo -e "${green}Done!${NC}\n"
 
 echo -e "${green}Reboot?${NC}"
 select yn in "Yes" "No"; do
