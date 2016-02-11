@@ -365,8 +365,10 @@ fi
 if [ "$crontab_installed" == 0 ]
 then
 echo -e "${red}Crontab for fixing hdmi sound mute problem${NC}\n"
-echo '* * * * * /usr/bin/amixer set IEC958 unmute' > /var/spool/cron/crontabs/kiosk
-chown kiosk.crontab /var/spool/cron/crontabs/kiosk
+echo "* * * * * /usr/bin/amixer set IEC958 unmute" > cron
+crontab -l -u kiosk | cat - cron | crontab -u kiosk -
+rm -rf cron
+service cron restart
 sed -i -e 's/crontab_installed=0/crontab_installed=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
