@@ -237,6 +237,7 @@ wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshar
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/dashboard/layout/dash.xml -O /usr/share/pyshared/ajenti/plugins/dashboard/layout/dash.xml
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/fm/__init__.py -O /usr/share/pyshared/ajenti/plugins/fm/__init__.py
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/fm/fm.py -O /usr/share/pyshared/ajenti/plugins/fm/fm.py
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/fm/layout/main.xml -O /usr/share/pyshared/ajenti/plugins/fm/layout/main.xml
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/main/content/js/controls.index.coffee -O /usr/share/pyshared/ajenti/plugins/main/content/js/controls.index.coffee
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/main/content/js/controls.index.coffee.c.js -O /usr/share/pyshared/ajenti/plugins/main/content/js/controls.index.coffee.c.js
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/main/content/static/auth.html -O /usr/share/pyshared/ajenti/plugins/main/content/static/auth.html
