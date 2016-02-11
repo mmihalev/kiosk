@@ -21,7 +21,7 @@
         "administrator": {
             "configs": {
                 "ajenti.plugins.terminal.main.Terminals": "{\"shell\": \"sh -c $SHELL || bash\"}", 
-                "ajenti.plugins.dashboard.dash.Dash": "{\"widgets\": [{\"index\": 0, \"config\": null, \"container\": \"1\", \"class\": \"ajenti.plugins.power.power.PowerWidget\"}, {\"index\": 0, \"config\": null, \"container\": \"0\", \"class\": \"ajenti.plugins.sensors.uptime.UptimeWidget\"}]}"
+                "ajenti.plugins.dashboard.dash.Dash": "{\"widgets\": [{\"index\": 0, \"config\": null, \"container\": \"1\", \"class\": \"ajenti.plugins.power.power.PowerWidget\"}, {\"index\": 1, \"config\": null, \"container\": \"1\", \"class\": \"ajenti.plugins.sensors.memory.MemoryWidget\"}, {\"index\": 2, \"config\": null, \"container\": \"1\", \"class\": \"ajenti.plugins.sensors.memory.SwapWidget\"}, {\"index\": 0, \"config\": null, \"container\": \"0\", \"class\": \"ajenti.plugins.sensors.uptime.UptimeWidget\"}, {\"index\": 1, \"config\": null, \"container\": \"0\", \"class\": \"ajenti.plugins.sensors.cpu.CPUWidget\"}, {\"index\": 2, \"config\": {\"device\": \"/\"}, \"container\": \"0\", \"class\": \"ajenti.plugins.fstab.widget.DiskSpaceWidget\"}, {\"index\": 3, \"config\": {\"device\": \"/\"}, \"container\": \"0\", \"class\": \"ajenti.plugins.fstab.widget.DiskFreeSpaceWidget\"}, {\"index\": 4, \"config\": null, \"container\": \"0\", \"class\": \"ajenti.plugins.sensors.load.LoadWidget\"}, {\"index\": 5, \"config\": {\"device\": \"p2p1\"}, \"container\": \"0\", \"class\": \"ajenti.plugins.network.widget.TrafficWidget\"}]}"
             }, 
             "password": "sha512|$6$rounds=40000$iXTy3ysNMU9i7CHE$J84UW42Ea9eNZCefZYgWwp3VbgsgiFHHJRGCaFBSiSYLCd8uWo6NETRa/WsaF7Gz9lxxTPSkCfgr7TphIymqp0", 
             "permissions": [
@@ -46,13 +46,20 @@
                 "packages:modify", 
                 "packages:refresh", 
                 "power:reboot", 
-                "power:shutdown"
+                "power:shutdown", 
+                "widget:CPUWidget", 
+                "widget:DiskSpaceWidget", 
+                "widget:DiskFreeSpaceWidget", 
+                "widget:LoadWidget", 
+                "widget:MemoryWidget", 
+                "widget:SwapWidget", 
+                "widget:TrafficWidget"
             ]
         }, 
         "kiosk": {
             "configs": {
                 "ajenti.plugins.fm.fm.FileManager": "{\"start\": \"/home/kiosk\", \"new_owner\": \"kiosk\", \"kiosk\": \"/\", \"new_group\": \"kiosk\"}", 
-                "ajenti.plugins.dashboard.dash.Dash": "{\"widgets\": [{\"index\": 0, \"config\": null, \"container\": \"1\", \"class\": \"ajenti.plugins.sensors.uptime.UptimeWidget\"}, {\"index\": 1, \"config\": null, \"container\": \"1\", \"class\": \"ajenti.plugins.power.power.PowerWidget\"}, {\"index\": 0, \"config\": {\"text\": \"DIG Engineering Kiosk  Version 0.1\"}, \"container\": \"0\", \"class\": \"ajenti.plugins.dashboard.text.TextWidget\"}, {\"index\": 1, \"config\": {\"text\": \"Info at 0882 233455\"}, \"container\": \"0\", \"class\": \"ajenti.plugins.dashboard.text.TextWidget\"}]}"
+                "ajenti.plugins.dashboard.dash.Dash": "{\"widgets\": [{\"index\": 0, \"config\": null, \"container\": \"1\", \"class\": \"ajenti.plugins.sensors.uptime.UptimeWidget\"}, {\"index\": 1, \"config\": null, \"container\": \"1\", \"class\": \"ajenti.plugins.power.power.PowerWidget\"}, {\"index\": 2, \"config\": null, \"container\": \"1\", \"class\": \"ajenti.plugins.sensors.cpu.CPUWidget\"}, {\"index\": 3, \"config\": {\"device\": \"p2p1\"}, \"container\": \"1\", \"class\": \"ajenti.plugins.network.widget.TrafficWidget\"}, {\"index\": 0, \"config\": {\"text\": \"DIG Engineering Kiosk  Version 0.1\"}, \"container\": \"0\", \"class\": \"ajenti.plugins.dashboard.text.TextWidget\"}, {\"index\": 1, \"config\": {\"text\": \"Info at 0882 233455\"}, \"container\": \"0\", \"class\": \"ajenti.plugins.dashboard.text.TextWidget\"}, {\"index\": 2, \"config\": {\"device\": \"/\"}, \"container\": \"0\", \"class\": \"ajenti.plugins.fstab.widget.DiskSpaceWidget\"}, {\"index\": 3, \"config\": {\"device\": \"/\"}, \"container\": \"0\", \"class\": \"ajenti.plugins.fstab.widget.DiskFreeSpaceWidget\"}, {\"index\": 4, \"config\": null, \"container\": \"0\", \"class\": \"ajenti.plugins.sensors.load.LoadWidget\"}, {\"index\": 5, \"config\": null, \"container\": \"0\", \"class\": \"ajenti.plugins.sensors.memory.MemoryWidget\"}]}"
             }, 
             "password": "sha512|$6$rounds=40000$8nU471hRuhx7kHxR$oBGGGNIBds/pyzUIoqW2NOP4qw.LrYa/qlkgvLqV9OxerRzdp9/4LpTqPBak6dYmsw9YjuEi.4PhYMj9SgzZR0", 
             "permissions": [
@@ -63,9 +70,14 @@
                 "widget:ScriptWidget", 
                 "widget:TextWidget", 
                 "widget:UptimeWidget", 
-                "scripts:run", 
                 "power:reboot", 
-                "power:shutdown"
+                "power:shutdown", 
+                "widget:CPUWidget", 
+                "widget:DiskSpaceWidget", 
+                "widget:DiskFreeSpaceWidget", 
+                "widget:LoadWidget", 
+                "widget:MemoryWidget", 
+                "widget:TrafficWidget"
             ]
         }, 
         "user": {
