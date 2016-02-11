@@ -1,0 +1,202 @@
+<vc>
+    <body>
+        <pad>
+            <vc id="filemanager">
+                <bind:collection bind="tabs">
+                    <tabs id="tabs" bind="__items" />
+                    <bind:template>
+                        <tab bind="shortpath">
+                            <vc>
+                                <box height="5" />
+                                <bind:collection id="breadcrumbs" bind="breadcrumbs">
+                                    <hc bind="__items" />
+                                    <bind:template>
+                                        <hc>
+                                            <button id="name" style="mini" bind="name" icon="folder-open" />
+                                        </hc>
+                                    </bind:template>
+                                </bind:collection>
+                                <bind:collection id="items" bind="items" pagesize="30">
+                            		<dt bind="__items" style="compressed">
+                                        <dtr header="True">
+                                            <dth width="30">
+                                                <tooltip text="{Select all}">
+                                                    <button icon="check" style="raw" id="select-all" />
+                                                </tooltip>
+                                            </dth>
+                                            <dth text="{Name}" />
+                                            <dth text="{Size}" width="100" />
+                                            <dth width="1%" />
+                                        </dtr>
+                                    </dt>
+                                    <bind:template>
+                                    	<dtr>
+                                            <dtd><checkbox id="check" bind="checked" /></dtd>
+                                            <dtd>
+                                                <hc>
+                                                    <icon bind="icon" />
+                                    			    <button style="link" bind="name" id="name" />
+                                                </hc>
+                                    		</dtd>
+                                            <dtd>
+                                                <label bind="sizestr" />
+                                            </dtd>
+                                            <dtd>
+                                                <button id="edit" icon="list" style="mini" />
+                                            </dtd>
+                                    	</dtr>
+                                    </bind:template>
+
+                                    <right>
+                                        <paging bind="__paging" />
+                                    </right>
+                                </bind:collection>
+                            </vc>
+                        </tab>
+                    </bind:template>
+                </bind:collection>
+
+                <pad>
+                    <label text="{Upload}" style="bold" />
+                    <fileupload target="/ajenti:fm-upload" />
+                </pad>
+
+                <pad id="bind-clipboard">
+                    <right>
+                        <button id="clear-clipboard" icon="remove-sign" text="Empty" />
+                    </right>
+                    <label text="{Clipboard}" style="bold" />
+                    <bind:collection bind="clipboard">
+                        <pad>
+                            <dt bind="__items" filtering="False">
+                                <dtr header="True">
+                                    <dth text="{Name}" />
+                                    <dth width="1%" />
+                                </dtr>
+                            </dt>
+                        </pad>
+                        <bind:template>
+                            <dtr>
+                                <dtd>
+                                    <hc>
+                                        <icon bind="icon" />
+                                        <button style="link" bind="name" id="name" />
+                                    </hc>
+                                </dtd>
+                                <dtd>
+                                    <hc>
+                                        <button bind="__delete" icon="remove-sign" text="{Remove}" />
+                                    </hc>
+                                </dtd>
+                            </dtr>
+                        </bind:template>
+                    </bind:collection> 
+                </pad>
+            </vc>
+        </pad>
+
+        <dialog id="dialog" visible="False" buttons="[{'id': 'cancel', 'text': _('Cancel')}]">
+            <pad>
+                <vc>
+                    <formline text="{Name}">
+                        <hc>
+                            <icon bind="icon" />
+                        </hc>
+                    </formline>
+
+                    <formline text="{Last access time}">
+                        <label bind="atime" bindtransform="str" />
+                    </formline>
+                    
+                    <formline text="{Modification time}">
+                        <label bind="mtime" bindtransform="str" />
+                    </formline>
+                    
+                    <formline text="{Creation time}">
+                        <label bind="ctime" bindtransform="str" />
+                    </formline>
+                    
+                    <hc>
+                        <button id="edit" icon="edit" text="{Edit}" />
+                        <button id="unpack" icon="dropbox" text="{Unpack}" />
+                    </hc>
+                    
+                    <label text="{Access}" style="bold" />
+                    
+                    <indent>
+                        <vc>
+                            <lt>
+                                <ltr>
+                                    <ltd>
+                                    </ltd>
+                                    <ltd>
+                                        <label text="R" />
+                                    </ltd>
+                                    <ltd>
+                                        <label text="W" />
+                                    </ltd>
+                                    <ltd>
+                                        <label text="X" />
+                                    </ltd>
+                                    <ltd>
+                                    </ltd>
+                                </ltr>
+                                <ltr>
+                                    <ltd>
+                                        <label text="{Owner}" />
+                                    </ltd>
+                                    <ltd>
+                                        <checkbox bind="mod_ur" />
+                                    </ltd>
+                                    <ltd>
+                                        <checkbox bind="mod_uw" />
+                                    </ltd>
+                                    <ltd>
+                                        <checkbox bind="mod_ux" />
+                                    </ltd>
+                                    <ltd>
+                                        <editable bind="owner" />
+                                    </ltd>
+                                </ltr>
+                                <ltr>
+                                    <ltd>
+                                        <label text="{Group}" />
+                                    </ltd>
+                                    <ltd>
+                                        <checkbox bind="mod_gr" />
+                                    </ltd>
+                                    <ltd>
+                                        <checkbox bind="mod_gw" />
+                                    </ltd>
+                                    <ltd>
+                                        <checkbox bind="mod_gx" />
+                                    </ltd>
+                                    <ltd>
+                                        <editable bind="group" />
+                                    </ltd>
+                                </ltr>
+                                <ltr>
+                                    <ltd>
+                                        <label text="{Others}" />
+                                    </ltd>
+                                    <ltd>
+                                        <checkbox bind="mod_ar" />
+                                    </ltd>
+                                    <ltd>
+                                        <checkbox bind="mod_aw" />
+                                    </ltd>
+                                    <ltd>
+                                        <checkbox bind="mod_ax" />
+                                    </ltd>
+                                    <ltd>
+                                    </ltd>
+                                </ltr>
+                            </lt>
+                            <checkbox id="chmod-recursive" text="{Set recursively}" />
+                        </vc>
+                    </indent>
+                </vc>
+            </pad>
+        </dialog>
+    </body>
+</vc> 
