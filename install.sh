@@ -287,7 +287,7 @@ fi
 echo -e "${red}Installing ${blue}PHP${red}...${NC}\n"
 if [ "$php_installed" == 0 ]
 then
-apt-get -q=e install php5-cli php5-common php5-fpm php5-mysqlnd php5-mcrypt
+apt-get -q=2 install php5-cli php5-common php5-fpm php5-mysqlnd php5-mcrypt
 update-rc.d php5-fpm defaults
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/php5/fpm/php.ini -O /etc/php5/fpm/php.ini
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/php5/fpm/pool.d/www.conf -O /etc/php5/fpm/pool.d/www.conf
