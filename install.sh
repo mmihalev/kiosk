@@ -44,6 +44,19 @@ fi
 . stages.cfg
 
 
+# Prevent sleeping for inactivity
+echo -e "${red}Prevent sleeping for inactivity...${NC}\n"
+if [ "$prevent_sleeping" == 0 ]
+then
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/kbd/config -O /etc/kbd/config
+sed -i -e 's/prevent_sleeping=0/prevent_sleeping=1/g' stages.cfg
+echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Prevent sleeping already done. Skipping...${NC}\n"
+fi
+
+
+
 echo -e "${red}Installing operating system updates ${blue}(this may take a while)${red}...${NC}\n"
 if [ "$updates_installed" == 0 ]
 then
@@ -393,19 +406,6 @@ sed -i -e 's/plymouth_theme_installed=0/plymouth_theme_installed=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
 	echo -e "${blue}Base theme already installed. Skipping...${NC}\n"
-fi
-
-
-
-# Prevent sleeping for inactivity
-echo -e "${red}Prevent sleeping for inactivity...${NC}\n"
-if [ "$prevent_sleeping" == 0 ]
-then
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/kbd/config -O /etc/kbd/config
-sed -i -e 's/prevent_sleeping=0/prevent_sleeping=1/g' stages.cfg
-echo -e "${green}Done!${NC}\n"
-else
-	echo -e "${blue}Prevent sleeping already done. Skipping...${NC}\n"
 fi
 
 
