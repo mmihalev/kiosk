@@ -15,7 +15,7 @@ VERSION=$(lsb_release -cs)
 # Check if stages.cfg exists. If not, created it. 
 if [ ! -f stages.cfg ]
 then
-echo 'updates_installed=0
+echo '#updates_installed=0
 grub_recovery_disable=0
 wireless_enabled=0
 xorg_installed=0
