@@ -15,13 +15,9 @@ VERSION=$(lsb_release -cs)
 # Check if stages.cfg exists. If not, created it. 
 if [ ! -f stages.cfg ]
 then
-echo '#updates_installed=0
-grub_recovery_disable=0
-wireless_enabled=0
-xorg_installed=0
+echo 'grub_recovery_disable=0
 admin_created=0
 kiosk_created=0
-kiosk_autologin=0
 screensaver_installed=0
 chromium_installed=0
 kiosk_scripts=0
@@ -31,12 +27,11 @@ ajenti_plugins_installed=0
 nginx_installed=0
 php_installed=0
 website_downloaded=0
-touchscreen_installed=0
-audio_installed=0
 additional_software_installed=0
-crontab_installed=0
 plymouth_theme_installed=0
 prevent_sleeping=0
+disable_dekstop=0
+reconfigure_xorg=0
 kiosk_permissions=0' > stages.cfg
 fi
 
@@ -44,11 +39,12 @@ fi
 . stages.cfg
 
 
+
 # Prevent sleeping for inactivity
 echo -e "${red}Prevent sleeping for inactivity...${NC}\n"
 if [ "$prevent_sleeping" == 0 ]
 then
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/kbd/config -O /etc/kbd/config
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/etc/kbd/config -O /etc/kbd/config
 sed -i -e 's/prevent_sleeping=0/prevent_sleeping=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
@@ -56,29 +52,18 @@ else
 fi
 
 
-
-echo -e "${red}Installing operating system updates ${blue}(this may take a while)${red}...${NC}\n"
-if [ "$updates_installed" == 0 ]
+echo -e "${red}Installing 3rd party software...${NC}\n"
+if [ "$additional_software_installed" == 0 ]
 then
-# Use mirror method
-sed -i "1i \
-deb mirror://mirrors.ubuntu.com/mirrors.txt $VERSION main restricted universe multiverse\n\
-deb mirror://mirrors.ubuntu.com/mirrors.txt $VERSION-updates main restricted universe multiverse\n\
-deb mirror://mirrors.ubuntu.com/mirrors.txt $VERSION-backports main restricted universe multiverse\n\
-deb mirror://mirrors.ubuntu.com/mirrors.txt $VERSION-security main restricted universe multiverse\n\
-" /etc/apt/sources.list
-
-# Refresh
 apt-get -q=2 update
-
-# Clean
-apt-get -q=2 autoremove
-apt-get -q=2 clean
-sed -i -e 's/updates_installed=0/updates_installed=1/g' stages.cfg
+apt-get -q=2 install --no-install-recommends openbox pulseaudio > /dev/null
+apt-get -q=2 install mc > /dev/null
+sed -i -e 's/additional_software_installed=0/additional_software_installed=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
-	echo -e "${blue}Updates already installed. Skipping...${NC}\n"
+	echo -e "${blue}3rd party software already installed. Skipping...${NC}\n"
 fi
+
 
 
 echo -e "${red}Disabling root recovery mode...${NC}\n"
@@ -92,31 +77,6 @@ sed -i -e 's/grub_recovery_disable=0/grub_recovery_disable=1/g' stages.cfg
 echo -e "\n${green}Done!${NC}\n"
 else
 	echo -e "${blue}Root recovery already disabled. Skipping...${NC}\n"
-fi
-
-
-echo -e "${red}Enabling secure wireless support...${NC}\n"
-if [ "$wireless_enabled" == 0 ]
-then
-apt-get -q=2 install --no-install-recommends wpasupplicant > /dev/null
-sed -i -e 's/wireless_enabled=0/wireless_enabled=1/g' stages.cfg
-echo -e "${green}Done!${NC}\n"
-else
-	echo -e "${blue}Wireless support already enabled. Skipping...${NC}\n"
-fi
-
-
-echo -e "${red}Installing a graphical user interface...${NC}\n"
-if [ "$xorg_installed" == 0 ]
-then
-apt-get -q=2 install --no-install-recommends xorg nodm matchbox-window-manager > /dev/null
-
-# Hide Cursor
-apt-get -q=2 install --no-install-recommends unclutter > /dev/null
-sed -i -e 's/xorg_installed=0/xorg_installed=1/g' stages.cfg
-echo -e "\n${green}Done!${NC}\n"
-else
-	echo -e "${blue}Xorg already installed. Skipping...${NC}\n"
 fi
 
 
@@ -135,6 +95,7 @@ echo -e "${red}Creating kiosk user...${NC}\n"
 if [ "$kiosk_created" == 0 ]
 then
 useradd kiosk -m -d /home/kiosk -p `openssl passwd -crypt K10sk201` -s /bin/bash
+usermod -a -G audio kiosk
 sed -i -e 's/kiosk_created=0/kiosk_created=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
@@ -142,28 +103,13 @@ else
 fi
 
 
-# Configure kiosk autologin
-echo -e "${red}Configuring kiosk autologin...${NC}\n"
-if [ "$kiosk_autologin" == 0 ]
-then
-sed -i -e 's/NODM_ENABLED=false/NODM_ENABLED=true/g' /etc/default/nodm
-sed -i -e 's/NODM_USER=root/NODM_USER=kiosk/g' /etc/default/nodm
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/init.d/nodm -O /etc/init.d/nodm
-sed -i -e 's/kiosk_autologin=0/kiosk_autologin=1/g' stages.cfg
-echo -e "${green}Done!${NC}\n"
-else
-	echo -e "${blue}Kiosk autologin already configured. Skipping...${NC}\n"
-fi
-
 
 # Create .xscreensaver
 echo -e "${red}Installing and configuring the screensaver...${NC}\n"
 if [ "$screensaver_installed" == 0 ]
 then
 apt-get -q=2 install --no-install-recommends xscreensaver xscreensaver-data-extra xscreensaver-gl-extra libwww-perl > /dev/null
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/xscreensaver -O /home/kiosk/.xscreensaver
-
-# Create the screensaver directory
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/xscreensaver -O /home/kiosk/.xscreensaver
 mkdir /home/kiosk/screensavers
 sed -i -e 's/screensaver_installed=0/screensaver_installed=1/g' stages.cfg
 echo -e "\n${green}Done!${NC}\n"
@@ -197,17 +143,17 @@ then
 mkdir /home/kiosk/.kiosk
 
 # Create xsession
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/xsession -O /home/kiosk/.xsession
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/xsession -O /home/kiosk/.xsession
 
 # Create other kiosk scripts
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/kiosk/browser.cfg -O /home/kiosk/.kiosk/browser.cfg
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/kiosk/browser_killer.sh -O /home/kiosk/.kiosk/browser_killer.sh
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/kiosk/browser_switches.cfg -O /home/kiosk/.kiosk/browser_switches.cfg
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/kiosk/glslideshow_switches.cfg -O /home/kiosk/.kiosk/glslideshow_switches.cfg
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/kiosk/screensaver.cfg -O /home/kiosk/.kiosk/screensaver.cfg
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/kiosk/set_glslideshow_switches.sh -O /home/kiosk/.kiosk/set_glslideshow_switches.sh
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/kiosk/videos.cfg -O /home/kiosk/.kiosk/videos.cfg
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/kiosk/videos_switches.cfg -O /home/kiosk/.kiosk/videos_switches.cfg
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/browser.cfg -O /home/kiosk/.kiosk/browser.cfg
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/browser_killer.sh -O /home/kiosk/.kiosk/browser_killer.sh
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/browser_switches.cfg -O /home/kiosk/.kiosk/browser_switches.cfg
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/glslideshow_switches.cfg -O /home/kiosk/.kiosk/glslideshow_switches.cfg
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/screensaver.cfg -O /home/kiosk/.kiosk/screensaver.cfg
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/set_glslideshow_switches.sh -O /home/kiosk/.kiosk/set_glslideshow_switches.sh
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/videos.cfg -O /home/kiosk/.kiosk/videos.cfg
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/videos_switches.cfg -O /home/kiosk/.kiosk/videos_switches.cfg
 
 # Create browser killer
 apt-get -q=2 install --no-install-recommends xprintidle > /dev/null
@@ -243,19 +189,19 @@ deb http://repo.ajenti.org/ng/debian main main ubuntu
 '  >> /etc/apt/sources.list
 apt-get -q=2 update && apt-get -q=2 install --no-install-recommends ajenti > /dev/null
 service ajenti stop
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/ajenti/config.json -O /etc/ajenti/config.json
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/etc/ajenti/config.json -O /etc/ajenti/config.json
 
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/dashboard/content/js/controls.dashboard.coffee -O /usr/share/pyshared/ajenti/plugins/dashboard/content/js/controls.dashboard.coffee
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/dashboard/content/js/controls.dashboard.coffee.c.js -O /usr/share/pyshared/ajenti/plugins/dashboard/content/js/controls.dashboard.coffee.c.js
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/dashboard/layout/dash.xml -O /usr/share/pyshared/ajenti/plugins/dashboard/layout/dash.xml
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/fm/__init__.py -O /usr/share/pyshared/ajenti/plugins/fm/__init__.py
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/fm/fm.py -O /usr/share/pyshared/ajenti/plugins/fm/fm.py
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/fm/layout/main.xml -O /usr/share/pyshared/ajenti/plugins/fm/layout/main.xml
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/main/content/js/controls.index.coffee -O /usr/share/pyshared/ajenti/plugins/main/content/js/controls.index.coffee
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/main/content/js/controls.index.coffee.c.js -O /usr/share/pyshared/ajenti/plugins/main/content/js/controls.index.coffee.c.js
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/main/content/static/auth.html -O /usr/share/pyshared/ajenti/plugins/main/content/static/auth.html
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/main/content/static/index.html -O /usr/share/pyshared/ajenti/plugins/main/content/static/index.html
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/pyshared/ajenti/plugins/power/layout/widget.xml -O /usr/share/pyshared/ajenti/plugins/power/layout/widget.xml
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/usr/share/pyshared/ajenti/plugins/dashboard/content/js/controls.dashboard.coffee -O /usr/share/pyshared/ajenti/plugins/dashboard/content/js/controls.dashboard.coffee
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/usr/share/pyshared/ajenti/plugins/dashboard/content/js/controls.dashboard.coffee.c.js -O /usr/share/pyshared/ajenti/plugins/dashboard/content/js/controls.dashboard.coffee.c.js
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/usr/share/pyshared/ajenti/plugins/dashboard/layout/dash.xml -O /usr/share/pyshared/ajenti/plugins/dashboard/layout/dash.xml
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/usr/share/pyshared/ajenti/plugins/fm/__init__.py -O /usr/share/pyshared/ajenti/plugins/fm/__init__.py
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/usr/share/pyshared/ajenti/plugins/fm/fm.py -O /usr/share/pyshared/ajenti/plugins/fm/fm.py
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/usr/share/pyshared/ajenti/plugins/fm/layout/main.xml -O /usr/share/pyshared/ajenti/plugins/fm/layout/main.xml
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/usr/share/pyshared/ajenti/plugins/main/content/js/controls.index.coffee -O /usr/share/pyshared/ajenti/plugins/main/content/js/controls.index.coffee
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/usr/share/pyshared/ajenti/plugins/main/content/js/controls.index.coffee.c.js -O /usr/share/pyshared/ajenti/plugins/main/content/js/controls.index.coffee.c.js
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/usr/share/pyshared/ajenti/plugins/main/content/static/auth.html -O /usr/share/pyshared/ajenti/plugins/main/content/static/auth.html
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/usr/share/pyshared/ajenti/plugins/main/content/static/index.html -O /usr/share/pyshared/ajenti/plugins/main/content/static/index.html
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/usr/share/pyshared/ajenti/plugins/power/layout/widget.xml -O /usr/share/pyshared/ajenti/plugins/power/layout/widget.xml
 sed -i -e 's/ajenti_installed=0/ajenti_installed=1/g' stages.cfg
 echo -e "\n${green}Done!${NC}\n"
 else
@@ -286,7 +232,7 @@ if [ "$nginx_installed" == 0 ]
 then
 apt-get -q=2 install nginx > /dev/null
 service nginx stop
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/nginx/sites-enabled/default -O /etc/nginx/sites-available/default
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/etc/nginx/sites-enabled/default -O /etc/nginx/sites-available/default
 sed -i -e 's/www-data/kiosk/g' /etc/nginx/nginx.conf
 mkdir /home/kiosk/html
 chown -R kiosk.kiosk /home/kiosk/html
@@ -303,8 +249,8 @@ if [ "$php_installed" == 0 ]
 then
 apt-get -q=2 install php5-cli php5-common php5-fpm php5-mysqlnd php5-mcrypt
 update-rc.d php5-fpm defaults
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/php5/fpm/php.ini -O /etc/php5/fpm/php.ini
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/php5/fpm/pool.d/www.conf -O /etc/php5/fpm/pool.d/www.conf
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/etc/php5/fpm/php.ini -O /etc/php5/fpm/php.ini
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/etc/php5/fpm/pool.d/www.conf -O /etc/php5/fpm/pool.d/www.conf
 service php5-fpm restart
 sed -i -e 's/php_installed=0/php_installed=1/g' stages.cfg
 echo -e "\n${green}Done!${NC}\n"
@@ -332,73 +278,16 @@ else
 fi	
 
 
-	
-echo -e "${red}Installing touchscreen support...${NC}\n"
-if [ "$touchscreen_installed" == 0 ]
-then
-apt-get -q=2 install --no-install-recommends xserver-xorg-input-multitouch xinput-calibrator > /dev/null
-sed -i -e 's/touchscreen_installed=0/touchscreen_installed=1/g' stages.cfg
-echo -e "${green}Done!${NC}\n"
-else
-	echo -e "${blue}Touchscreen support already installed. Skipping...${NC}\n"
-fi
-
-echo -e "${red}Installing audio...${NC}\n"
-if [ "$audio_installed" == 0 ]
-then
-apt-get -q=2 install --no-install-recommends alsa > /dev/null
-adduser kiosk audio
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/home/kiosk/asoundrc -O /home/kiosk/.asoundrc
-chown kiosk.kiosk /home/kiosk/.asoundrc
-sed -i -e 's/audio_installed=0/audio_installed=1/g' stages.cfg
-echo -e "\n${green}Done!${NC}\n"
-else
-	echo -e "${blue}Audio already installed. Skipping...${NC}\n"
-fi
-
-
-echo -e "${red}Installing 3rd party software...${NC}\n"
-if [ "$additional_software_installed" == 0 ]
-then
-apt-get -q=2 install pulseaudio > /dev/null
-apt-get -q=2 install libvdpau* > /dev/null
-apt-get -q=2 install alsa-utils > /dev/null
-apt-get -q=2 install mc > /dev/null
-
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/etc/pulse/default.pa -O /etc/pulse/default.pa
-sed -i -e 's/additional_software_installed=0/additional_software_installed=1/g' stages.cfg
-echo -e "${green}Done!${NC}\n"
-else
-	echo -e "${blue}3rd party software already installed. Skipping...${NC}\n"
-fi
-
-
-
-# Crontab for fixing hdmi sound mute problem
-if [ "$crontab_installed" == 0 ]
-then
-echo -e "${red}Crontab for fixing hdmi sound mute problem${NC}\n"
-echo "* * * * * /usr/bin/amixer set IEC958 unmute" > cron
-crontab -l -u kiosk | cat - cron | crontab -u kiosk -
-rm -rf cron
-service cron restart
-sed -i -e 's/crontab_installed=0/crontab_installed=1/g' stages.cfg
-echo -e "${green}Done!${NC}\n"
-else
-	echo -e "${blue}Crontab already installed. Skipping...${NC}\n"
-fi
-
-
 
 # Ubuntu loading theme
 echo -e "${red}Customizing base theme...${NC}\n"
 if [ "$plymouth_theme_installed" == 0 ]
 then
 mkdir /lib/plymouth/themes/kiosk
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/lib/plymouth/themes/kiosk/dig.png -O /lib/plymouth/themes/kiosk/dig.png
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/lib/plymouth/themes/kiosk/kiosk.plymouth -O /lib/plymouth/themes/kiosk/kiosk.plymouth
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/lib/plymouth/themes/kiosk/kiosk.script -O /lib/plymouth/themes/kiosk/kiosk.script
-#wget -q https://raw.githubusercontent.com/mmihalev/kiosk/master/usr/share/initramfs-tools/scripts/functions -O /usr/share/initramfs-tools/scripts/functions
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/lib/plymouth/themes/kiosk/dig.png -O /lib/plymouth/themes/kiosk/dig.png
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/lib/plymouth/themes/kiosk/kiosk.plymouth -O /lib/plymouth/themes/kiosk/kiosk.plymouth
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/lib/plymouth/themes/kiosk/kiosk.script -O /lib/plymouth/themes/kiosk/kiosk.script
+#wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/usr/share/initramfs-tools/scripts/functions -O /usr/share/initramfs-tools/scripts/functions
 update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/kiosk/kiosk.plymouth 100
 #update-alternatives --config default.plymouth
 update-initramfs -u
@@ -419,6 +308,33 @@ sed -i -e 's/kiosk_permissions=0/kiosk_permissions=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
 	echo -e "${blue}Permissions already set. Skipping...${NC}\n"
+fi
+
+
+
+# Reconfigure Xorg
+echo -e "${red}Reconfiguring ${blue}Xorg${red}...${NC}\n"
+if [ "$reconfigure_xorg" == 0 ]
+then
+sed -i -e 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config
+sed -i -e 's/reconfigure_xorg=0/reconfigure_xorg=1/g' stages.cfg
+echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Xorg already reconfigured. Skipping...${NC}\n"
+fi
+
+
+
+
+# Disable desktop
+echo -e "${red}Disabling ${blue}Desktop${red}...${NC}\n"
+if [ "$disable_desktop" == 0 ]
+then
+echo manual | tee /etc/init/lightdm.override 
+sed -i -e 's/disable_desktop=0/disable_desktop=1/g' stages.cfg
+echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Desktop already disabled. Skipping...${NC}\n"
 fi
 
 
