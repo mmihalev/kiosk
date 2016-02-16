@@ -277,21 +277,20 @@ fi
 
 
 # Ubuntu loading theme
-echo -e "${red}Customizing base theme...${NC}\n"
+echo -e "${red}Customizing loading theme${blue}... ${blue}When asked, choose \"kiosk.plymouth\" theme!${NC}\n"
 if [ "$plymouth_theme_installed" == 0 ]
 then
 sudo mkdir /lib/plymouth/themes/kiosk
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/lib/plymouth/themes/kiosk/dig.png -O /lib/plymouth/themes/kiosk/dig.png
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/lib/plymouth/themes/kiosk/kiosk.plymouth -O /lib/plymouth/themes/kiosk/kiosk.plymouth
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/lib/plymouth/themes/kiosk/kiosk.script -O /lib/plymouth/themes/kiosk/kiosk.script
-#wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/usr/share/initramfs-tools/scripts/functions -O /usr/share/initramfs-tools/scripts/functions
 sudo update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/kiosk/kiosk.plymouth 100
-#update-alternatives --config default.plymouth
+sudo update-alternatives --config default.plymouth
 sudo update-initramfs -u
 sed -i -e 's/plymouth_theme_installed=0/plymouth_theme_installed=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
-	echo -e "${blue}Base theme already installed. Skipping...${NC}\n"
+	echo -e "${blue}Loading theme already customized. Skipping...${NC}\n"
 fi
 
 
@@ -310,10 +309,10 @@ fi
 
 
 # Reconfigure Xorg
-echo -e "${red}Reconfiguring ${blue}Xorg${red}...${NC}\n"
+echo -e "${red}Reconfiguring ${blue}Xorg${red}... ${blue}When aksed, select \"Anybody\"!${NC}\n"
 if [ "$reconfigure_xorg" == 0 ]
 then
-sudo sed -i -e 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config
+sudo dpkg-reconfigure x11-common
 sudo sed -i -e 's/reconfigure_xorg=0/reconfigure_xorg=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
