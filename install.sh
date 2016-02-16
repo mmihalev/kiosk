@@ -56,8 +56,7 @@ echo -e "${red}Installing 3rd party software...${NC}\n"
 if [ "$additional_software_installed" == 0 ]
 then
 apt-get -q=2 update
-apt-get -q=2 install --no-install-recommends openbox pulseaudio > /dev/null
-apt-get -q=2 install mc > /dev/null
+apt-get -q=2 install --no-install-recommends openbox pulseaudio mc ssh > /dev/null
 sed -i -e 's/additional_software_installed=0/additional_software_installed=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
