@@ -30,7 +30,7 @@ website_downloaded=0
 additional_software_installed=0
 plymouth_theme_installed=0
 prevent_sleeping=0
-disable_dekstop=0
+disable_desktop=0
 reconfigure_xorg=0
 kiosk_permissions=0' > stages.cfg
 fi
