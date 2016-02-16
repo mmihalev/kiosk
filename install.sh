@@ -162,16 +162,11 @@ wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kio
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/videos.cfg -O /home/kiosk/.kiosk/videos.cfg
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/videos_switches.cfg -O /home/kiosk/.kiosk/videos_switches.cfg
 
-
-
-## Create browser killer
-#apt-get -q=2 install --no-install-recommends xprintidle > /dev/null
-#chmod +x /home/kiosk/.kiosk/browser_killer.sh
-#sed -i -e 's/kiosk_scripts=0/kiosk_scripts=1/g' stages.cfg
-#echo -e "${green}Done!${NC}\n"
-#else
-#	echo -e "${blue}Kiosk scripts already installed. Skipping...${NC}\n"
-#fi
+sed -i -e 's/kiosk_scripts=0/kiosk_scripts=1/g' stages.cfg
+echo -e "${green}Done!${NC}\n"
+else
+	echo -e "${blue}Kiosk scripts already installed. Skipping...${NC}\n"
+fi
 
 
 # Mplayer
