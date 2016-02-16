@@ -7,13 +7,6 @@ xrandr --orientation left
 . /home/kiosk/.kiosk/browser.cfg
 . /home/kiosk/.kiosk/videos.cfg
 
-# Uncomment to run touchscreen calibration on next boot
-#xterm xinput_calibrator
-
-# Disable right-click
-if [ $nocontextmenu != "False" ]
-	then xmodmap -e "pointer = 1 2 99"
-fi
 
 # Autorun screensaver on login
 if [ $xscreensaver_enable = "True" ]
@@ -33,13 +26,14 @@ then
 	sed -i "/programs:/c\programs:	glslideshow -root $screensaver_switches" /home/kiosk/.xscreensaver
 	xscreensaver -nosplash &
 else
-	xset s off # Disable screensaver
 	xset -dpms # Disable DPMS (Energy Star) features
-	xset s noblank # Do not blank the screen
+	xset s off # Disable screensaver
+	openbox-session &
+	start-pulseaudio-x11
 fi
 
 # Get screen resolution
-res=$(xrandr -q | awk -F'current' -F',' 'NR==1 {gsub("( |current)","");print $2}')
+#res=$(xrandr -q | awk -F'current' -F',' 'NR==1 {gsub("( |current)","");print $2}')
 
 # Nuke it from orbit
 #rm -r /home/kiosk/.opera
@@ -68,33 +62,18 @@ videos_switches=`cat /home/kiosk/.kiosk/videos_switches.cfg`
 #sh /home/kiosk/.kiosk/browser_killer.sh &
 
 # Start window manager
-matchbox-window-manager -use_titlebar no &
+#matchbox-window-manager -use_titlebar no &
 
-# Relaunch browser if closed
 while true; do
-	# Restore Opera Speed Dial
-	#cp /home/kiosk/.opera/speeddial.sav /home/kiosk/.opera/speeddial.ini
-
-	# Delete Opera Bookmarks
-	#rm /home/kiosk/.opera/bookmarks.adr
-
-	# Relaunch Opera
-	#if [ $kioskspeeddial = "True" ]
-	#then
-	#	opera -geometry $res+0+0 $browser_switches
-	#else
-	#	opera -geometry $res+0+0 $browser_switches $home_url
-	#fi
-
 	if [ $enable_browser = "True" ]
 	then
-		export DISPLAY=:0
-	    chromium-browser --kiosk --disable-infobars --disable-session-crashed-bubble --agc-startup-min-volume=100 $home_url
+		rm -rf ~/.{config,cache}/chrome/
+	    chromium-browser --kiosk --no-first-run --disable-infobars --disable-session-crashed-bubble $home_url
 	fi
 
 	if [ $enable_videos = "True" ]
 	then
-		export DISPLAY=:0
+		#export DISPLAY=:0
 	    mplayer -volume $video_volume $videos_switches
 	fi
 

@@ -143,11 +143,19 @@ then
 mkdir /home/kiosk/.kiosk
 
 # Create xsession
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/xsession -O /home/kiosk/.xsession
+#wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/xsession -O /home/kiosk/.xsession
+
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/opt/kiosk.sh -O /home/kiosk/kiosk.sh
+install -b -m 755 /home/kiosk/kiosk.sh /opt/kiosk.sh
+rm -rf /home/kiosk/kiosk.sh
+
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/etc/init/kiosk.conf -O /home/kiosk/kiosk.conf
+install -b -m 755 /home/kiosk/kiosk.conf /etc/init/kiosk.conf
+rm -rf /home/kiosk/kiosk.conf
 
 # Create other kiosk scripts
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/browser.cfg -O /home/kiosk/.kiosk/browser.cfg
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/browser_killer.sh -O /home/kiosk/.kiosk/browser_killer.sh
+#wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/browser_killer.sh -O /home/kiosk/.kiosk/browser_killer.sh
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/browser_switches.cfg -O /home/kiosk/.kiosk/browser_switches.cfg
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/glslideshow_switches.cfg -O /home/kiosk/.kiosk/glslideshow_switches.cfg
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/screensaver.cfg -O /home/kiosk/.kiosk/screensaver.cfg
@@ -155,14 +163,16 @@ wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kio
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/videos.cfg -O /home/kiosk/.kiosk/videos.cfg
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/kiosk/videos_switches.cfg -O /home/kiosk/.kiosk/videos_switches.cfg
 
-# Create browser killer
-apt-get -q=2 install --no-install-recommends xprintidle > /dev/null
-chmod +x /home/kiosk/.kiosk/browser_killer.sh
-sed -i -e 's/kiosk_scripts=0/kiosk_scripts=1/g' stages.cfg
-echo -e "${green}Done!${NC}\n"
-else
-	echo -e "${blue}Kiosk scripts already installed. Skipping...${NC}\n"
-fi
+
+
+## Create browser killer
+#apt-get -q=2 install --no-install-recommends xprintidle > /dev/null
+#chmod +x /home/kiosk/.kiosk/browser_killer.sh
+#sed -i -e 's/kiosk_scripts=0/kiosk_scripts=1/g' stages.cfg
+#echo -e "${green}Done!${NC}\n"
+#else
+#	echo -e "${blue}Kiosk scripts already installed. Skipping...${NC}\n"
+#fi
 
 
 # Mplayer
