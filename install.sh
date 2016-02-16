@@ -268,7 +268,7 @@ fi
 echo -e "${red}Downloading ${blue}Website content${red}...${NC}\n"
 if [ "$website_downloaded" == 0 ]
 then
-wget -q https://dl.dropboxusercontent.com/u/47604729/kiosk_html.zip -O kiosk_html.zip
+wget https://dl.dropboxusercontent.com/u/47604729/kiosk_html.zip -O kiosk_html.zip
 unzip -qq kiosk_html.zip
 mv kiosk_html/* /home/kiosk/html/
 chown -R kiosk.kiosk /home/kiosk/html/*
