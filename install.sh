@@ -107,7 +107,7 @@ fi
 echo -e "${red}Adding kiosk user to audio group...${NC}\n"
 if [ "$kiosk_audio" == 0 ]
 then
-sudo usermod -a -G audio $USER
+sudo usermod -a -G audio kiosk
 sed -i -e 's/kiosk_audio=0/kiosk_audio=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
