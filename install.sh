@@ -6,14 +6,14 @@ green='\e[1;32m'
 blue='\e[1;36m'
 NC='\e[0m' # No color
 
-clear
-
 
 # Check if we have root permissions
 if [ "$(id -u)" != "0" ]; then
 	echo -e "${red}Please, run installation with sudo (e.g.: sudo ./install.sh)${NC}\n"
 	exit 1
 fi
+
+clear
 
 
 # Determine Ubuntu Version Codename
