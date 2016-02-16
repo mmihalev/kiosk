@@ -13,13 +13,6 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
-# Check if started from kiosk user
-if [ "$(echo $USER)" != "kiosk" ]; then
-    echo -e "${red}Please, run installation from kiosk user${NC}"
-    exit 1
-fi
-
-
 clear
 
 
