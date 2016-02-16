@@ -9,7 +9,7 @@ NC='\e[0m' # No color
 
 # Check if we have root permissions
 if [ "$(id -u)" != "0" ]; then
-	echo -e "${red}Please, run installation with sudo (e.g.: sudo ./install.sh)${NC}\n"
+	echo -e "${red}Please, run installation with root privileges (e.g.: sudo ./install.sh)${NC}"
 	exit 1
 fi
 
