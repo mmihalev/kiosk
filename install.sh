@@ -277,15 +277,16 @@ fi
 
 
 # Ubuntu loading theme
-echo -e "${red}Customizing loading theme${blue}... ${blue}When asked, choose \"kiosk.plymouth\" theme!${NC}\n"
+echo -e "${red}Customizing loading theme${blue}...${NC}\n"
 if [ "$plymouth_theme_installed" == 0 ]
 then
-sleep 5
 sudo mkdir /lib/plymouth/themes/kiosk
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/lib/plymouth/themes/kiosk/dig.png -O /lib/plymouth/themes/kiosk/dig.png
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/lib/plymouth/themes/kiosk/kiosk.plymouth -O /lib/plymouth/themes/kiosk/kiosk.plymouth
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/lib/plymouth/themes/kiosk/kiosk.script -O /lib/plymouth/themes/kiosk/kiosk.script
 sudo update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/kiosk/kiosk.plymouth 100
+echo -e "${blue}You will be asked for an selection. Please, choose \"kiosk.plymouth\" theme!${NC}\n"
+sleep 5
 sudo update-alternatives --config default.plymouth
 sudo update-initramfs -u
 sed -i -e 's/plymouth_theme_installed=0/plymouth_theme_installed=1/g' stages.cfg
@@ -310,9 +311,10 @@ fi
 
 
 # Reconfigure Xorg
-echo -e "${red}Reconfiguring ${blue}Xorg${red}... ${blue}When aksed, select \"Anybody\"!${NC}\n"
+echo -e "${red}Reconfiguring ${blue}Xorg${red}...${NC}\n"
 if [ "$reconfigure_xorg" == 0 ]
 then
+echo -e "${blue}You will be asked for an selection. Please, select \"Anybody\"!${NC}\n"
 sleep 5
 sudo dpkg-reconfigure x11-common
 sudo sed -i -e 's/reconfigure_xorg=0/reconfigure_xorg=1/g' stages.cfg
