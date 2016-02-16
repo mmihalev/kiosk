@@ -416,8 +416,11 @@ echo -e "${blue}Kiosk hostname set to: ${kiosk_name}${NC}"
 
 
 echo -e "${green}Reboot?${NC}"
-select yn in "Yes" "No"; do
-        case $yn in
+PS3="Type 1 or 2:"
+options=("Yes" "No")
+select opt in "${options[@]}"
+do
+        case $opt in
                 Yes )
                         reboot ;;
                 No )
