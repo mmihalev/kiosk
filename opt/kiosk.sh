@@ -67,7 +67,7 @@ videos_switches=`cat /home/kiosk/.kiosk/videos_switches.cfg`
 while true; do
 	if [ $enable_browser = "True" ]
 	then
-		rm -rf ~/.{config,cache}/chrome/
+		rm -rf ~/.{config,cache}/chromium/
 	    chromium-browser --kiosk --no-first-run --disable-infobars --disable-session-crashed-bubble $home_url
 	fi
 
