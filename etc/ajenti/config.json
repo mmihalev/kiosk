@@ -11,9 +11,9 @@
                 "ajenti.plugins.fm.fm.FileManager": "{\"start\": \"/home/kiosk\", \"new_owner\": \"kiosk\", \"root\": \"/\", \"new_group\": \"kiosk\"}", 
                 "ajenti.plugins.sanickiosk_screensaver.main.SanickioskScreensaverPrefs": "{\"xscreensaver_enable\": false, \"glslideshow_pan\": \"\", \"glslideshow_duration\": \"\", \"xscreensaver_idle\": \"0:00:10\", \"glslideshow_fade\": \"3\", \"glslideshow_zoom\": \"100\", \"glslideshow_clip\": false}", 
                 "ajenti.users.UserManager": "{\"sync-provider\": \"unix\"}", 
-                "ajenti.plugins.kiosk_browser.main.SanickioskScreensaverPrefs": "{\"nomaillinks\": true, \"empty_on_exit\": true, \"nodownload\": true, \"browser_reset\": true, \"disable_config_url\": true, \"nocontextmenu\": true, \"fullscreen\": true, \"kioskmode\": true, \"enable_browser\": true, \"nokeys\": false, \"hide_ppreview\": true, \"home_url\": \"http://localhost:8080\", \"noprint\": true, \"accept_cookies_session_only\": true, \"hide_reload\": false, \"hide_forward\": false, \"hide_reset\": false, \"kioskspeeddial\": false, \"hide_print\": true, \"hide_addressbar\": false, \"nomenu\": true, \"hide_back\": false, \"hide_zoom\": false, \"browser_idle\": \"2\", \"hide_home\": false, \"custom_user_agent\": \"\", \"hide_toolbar\": false, \"hide_find\": false}", 
+                "ajenti.plugins.kiosk_browser.main.SanickioskScreensaverPrefs": "{\"enable_browser\": true, \"home_url\": \"http://localhost:8080\"}", 
                 "ajenti.plugins.tasks.manager.TaskManager": "{\"task_definitions\": []}", 
-                "ajenti.plugins.kiosk_photos.main.SanickioskScreensaverPrefs": "{\"xscreensaver_enable\": false, \"glslideshow_pan\": \"\", \"glslideshow_duration\": \"10\", \"xscreensaver_idle\": \"0:00:10\", \"glslideshow_fade\": \"3\", \"glslideshow_zoom\": \"100\", \"glslideshow_clip\": false}"
+                "ajenti.plugins.kiosk_photos.main.SanickioskScreensaverPrefs": "{\"photos_enable\": false}"
             }, 
             "password": "sha512|$6$rounds=40000$nIVrqqz638rB8wOo$VbMv8y2lStgcsYxEuu7JfHiEd06eeiSoIbg7Hvivj9K1vPayaCbAiAqtpyOoIkNfIXFmMD0jK6Dd4WFnvywkY1", 
             "permissions": []
