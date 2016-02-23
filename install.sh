@@ -63,7 +63,11 @@ echo -e "${red}Installing 3rd party software...${NC}\n"
 if [ "$additional_software_installed" == 0 ]
 then
 sudo apt-get -q=2 update
-sudo apt-get -q=2 install --no-install-recommends openbox pulseaudio mc ssh > /dev/null
+sudo apt-get -q=2 install --no-install-recommends openbox pulseaudio unclutter lm-sensors menu mc htop ssh > /dev/null
+#sudo service apparmor stop
+#sudo update-rc.d -f apparmor remove
+#sudo service bluetooth stop
+#sudo update-rc.d -f bluetooth remove
 sed -i -e 's/additional_software_installed=0/additional_software_installed=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
@@ -97,14 +101,15 @@ else
 fi
 
 
-echo -e "${red}Adding kiosk user to audio group...${NC}\n"
+echo -e "${red}Adding kiosk user to audio and video groups...${NC}\n"
 if [ "$kiosk_audio" == 0 ]
 then
 sudo usermod -a -G audio kiosk
+sudo usermod -a -G video kiosk
 sed -i -e 's/kiosk_audio=0/kiosk_audio=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
-	echo -e "${blue}Kiosk user already added to audio group. Skipping...${NC}\n"
+	echo -e "${blue}Kiosk user already added to audio and video groups. Skipping...${NC}\n"
 fi
 
 
@@ -113,6 +118,7 @@ fi
 echo -e "${red}Installing and configuring the screensaver...${NC}\n"
 if [ "$screensaver_installed" == 0 ]
 then
+sudo apt-get -q=2 remove gnome-screensaver
 sudo apt-get -q=2 install --no-install-recommends xscreensaver xscreensaver-data-extra xscreensaver-gl-extra libwww-perl > /dev/null
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/home/kiosk/xscreensaver -O /home/kiosk/.xscreensaver
 sudo mkdir /home/kiosk/screensavers
@@ -251,7 +257,7 @@ fi
 echo -e "${red}Installing ${blue}PHP${red}...${NC}\n"
 if [ "$php_installed" == 0 ]
 then
-sudo apt-get -q=2 install php5-cli php5-common php5-fpm php5-mysqlnd php5-mcrypt
+sudo apt-get -q=2 install pphp5-cli php5-fpm php5-geoip php5-imagick php5-imap php5-intl php5-mcrypt php5-memcache php5-memcached php5-mysqlnd php-net-smtp php-net-socket php-net-url php-net-url2 php-net-imap php-net-ftp php-mdb2-driver-mysql
 sudo update-rc.d php5-fpm defaults
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/etc/php5/fpm/php.ini -O /etc/php5/fpm/php.ini
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop/etc/php5/fpm/pool.d/www.conf -O /etc/php5/fpm/pool.d/www.conf
