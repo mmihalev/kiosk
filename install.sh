@@ -210,10 +210,10 @@ echo -e "${red}Adding the browser-based system administration tool ${blue}Kiosk 
 if [ "$ajenti_installed" == 0 ]
 then
 sudo wget -q http://repo.ajenti.org/debian/key -O- | apt-key add -
-sudo echo '
+echo '
 ## Ajenti
 deb http://repo.ajenti.org/ng/debian main main ubuntu
-'  >> /etc/apt/sources.list
+' | sudo tee -a /etc/apt/sources.list > /dev/null
 sudo apt-get -q=2 update 
 sudo apt-get -q=2 install --no-install-recommends ajenti > /dev/null
 sudo service ajenti stop
