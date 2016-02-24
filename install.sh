@@ -214,8 +214,7 @@ then
 wget -qO - http://repo.ajenti.org/debian/key | sudo apt-key add -
 echo '
 ## Ajenti
-deb http://repo.ajenti.org/ng/debian main main ubuntu
-' | sudo tee -a /etc/apt/sources.list > /dev/null
+deb http://repo.ajenti.org/ng/debian main main ubuntu' | sudo tee -a /etc/apt/sources.list > /dev/null
 sudo apt-get -q=2 update 
 sudo apt-get -q=2 install --no-install-recommends ajenti > /dev/null
 sudo service ajenti stop
