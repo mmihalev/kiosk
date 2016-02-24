@@ -123,7 +123,7 @@ fi
 
 
 
-echo -e "${red}Changing \"Dekstop\" text to \"Kiosk\"...${NC}\n"
+echo -e "${red}Changing \"Ubuntu Dekstop\" text to \"Kiosk\"...${NC}\n"
 if [ "$desktop_txt_changed" == 0 ]
 then
 echo '
@@ -135,7 +135,7 @@ sudo rm -rf /tmp/foo.po
 sed -i -e 's/desktop_txt_changed=0/desktop_txt_changed=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
-	echo -e "${blue}Desktop text already changed. Skipping...${NC}\n"
+	echo -e "${blue}\"Ubuntu Desktop\" text already changed. Skipping...${NC}\n"
 fi
 
 
@@ -144,9 +144,9 @@ echo -e "${red}Personalizing the desktop...${NC}\n"
 if [ "$desktop_personalized" == 0 ]
 then
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/Pictures/desktop-logo.jpg -O /home/kiosk/Pictures/desktop-logo.jpg
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/dconf/user -O /home/kiosk/.config/dconf/user_tmp
-export DISPLAY=:0
-dconf load / < /home/kiosk/.config/dconf/user_tmp
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/dconf/user -O /home/kiosk/.config/dconf/user
+#export DISPLAY=:0
+#dconf load / < /home/kiosk/.config/dconf/user_tmp
 sed -i -e 's/desktop_personalized=0/desktop_personalized=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
@@ -187,6 +187,7 @@ fi
 echo -e "${red}Installing Kiosk Scripts...${NC}\n"
 if [ "$kiosk_scripts" == 0 ]
 then
+mkidr /home/kiosk/.config/autostart
 mkdir /home/kiosk/.kiosk/
 mkdir /home/kiosk/Photos/
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/0-unclutter.desktop -O /home/kiosk/.config/autostart/0-unclutter.desktop
@@ -213,7 +214,8 @@ sudo echo '
 ## Ajenti
 deb http://repo.ajenti.org/ng/debian main main ubuntu
 '  >> /etc/apt/sources.list
-sudo apt-get -q=2 update && apt-get -q=2 install --no-install-recommends ajenti > /dev/null
+sudo apt-get -q=2 update 
+sudo apt-get -q=2 install --no-install-recommends ajenti > /dev/null
 sudo service ajenti stop
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/etc/ajenti/config.json -O /etc/ajenti/config.json
 
@@ -273,7 +275,7 @@ fi
 echo -e "${red}Installing ${blue}PHP${red}...${NC}\n"
 if [ "$php_installed" == 0 ]
 then
-sudo apt-get -q=2 install pphp5-cli php5-fpm php5-geoip php5-imagick php5-imap php5-intl php5-mcrypt php5-memcache php5-memcached php5-mysqlnd php-net-smtp php-net-socket php-net-url php-net-url2 php-net-imap php-net-ftp php-mdb2-driver-mysql > /dev/null
+sudo apt-get -q=2 install php5-cli php5-fpm php5-geoip php5-imagick php5-imap php5-intl php5-mcrypt php5-memcache php5-memcached php5-mysqlnd php-net-smtp php-net-socket php-net-url php-net-url2 php-net-imap php-net-ftp php-mdb2-driver-mysql > /dev/null
 sudo update-rc.d php5-fpm defaults
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/etc/php5/fpm/php.ini -O /etc/php5/fpm/php.ini
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/etc/php5/fpm/pool.d/www.conf -O /etc/php5/fpm/pool.d/www.conf
