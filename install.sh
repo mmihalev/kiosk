@@ -211,7 +211,7 @@ fi
 echo -e "${red}Adding the browser-based system administration tool ${blue}Kiosk web control${red}...${NC}\n"
 if [ "$ajenti_installed" == 0 ]
 then
-wget -q http://repo.ajenti.org/debian/key | sudo apt-key add -
+wget -qO http://repo.ajenti.org/debian/key | sudo apt-key add -
 echo '
 ## Ajenti
 deb http://repo.ajenti.org/ng/debian main main ubuntu
@@ -231,6 +231,7 @@ sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/usr/share/pyshared/ajenti/plugins/main/content/static/auth.html -O /usr/share/pyshared/ajenti/plugins/main/content/static/auth.html
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/usr/share/pyshared/ajenti/plugins/main/content/static/index.html -O /usr/share/pyshared/ajenti/plugins/main/content/static/index.html
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/usr/share/pyshared/ajenti/plugins/power/layout/widget.xml -O /usr/share/pyshared/ajenti/plugins/power/layout/widget.xml
+sudo rm -rf key
 sed -i -e 's/ajenti_installed=0/ajenti_installed=1/g' stages.cfg
 echo -e "\n${green}Done!${NC}\n"
 else
