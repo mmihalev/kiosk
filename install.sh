@@ -39,6 +39,7 @@ php_installed=0
 website_downloaded=0
 additional_software_installed=0
 plymouth_theme_installed=0
+hostname_set=0
 kiosk_permissions=0' > stages.cfg
 fi
 
@@ -394,7 +395,10 @@ do
 	esac
 done
 
-# Choose kiosk name
+
+
+if [ "$hostname_set" == 0 ]
+then
 kiosk_name=""
 while [[ ! $kiosk_name =~ ^[A-Za-z0-9]+$ ]]; do
     echo -e "${green}Kiosk name (e.g. kiosk1):${NC}"
@@ -410,7 +414,11 @@ else
 fi
 
 sudo sed -i "s/$old_hostname/$kiosk_name/g" /etc/hostname
+sed -i -e 's/hostname_set=0/hostname_set=1/g' stages.cfg
 echo -e "${blue}Kiosk hostname set to: ${kiosk_name}${NC}"
+else
+	echo -e "${blue}Kiosk name already set. Skipping...${NC}\n"
+fi
 
 
 echo -e "${green}Reboot?${NC}"
