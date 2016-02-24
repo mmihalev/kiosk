@@ -248,6 +248,7 @@ sudo unzip -qq kiosk_plugins-master.zip
 sudo mv Ajenti-Plugins-master/* /var/lib/ajenti/plugins/
 sudo rm -rf Ajenti-Plugins-master
 sudo rm -rf /var/lib/ajenti/plugins/sanickiosk_*
+sudo rm -rf kiosk_plugins-master.zip
 sed -i -e 's/ajenti_plugins_installed=0/ajenti_plugins_installed=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
