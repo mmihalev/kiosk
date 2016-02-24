@@ -430,6 +430,8 @@ else
 fi
 
 
+
+
 echo -e "${green}Reboot?${NC}"
 PS3="Type 1 or 2:"
 options=("Yes" "No")
@@ -442,3 +444,6 @@ do
                         break ;;
         esac
 done
+
+#Selfdestruct. The installation file will delete himself
+rm -- "$0"
