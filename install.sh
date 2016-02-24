@@ -211,7 +211,7 @@ fi
 echo -e "${red}Adding the browser-based system administration tool ${blue}Kiosk web control${red}...${NC}\n"
 if [ "$ajenti_installed" == 0 ]
 then
-wget -qO http://repo.ajenti.org/debian/key | sudo apt-key add -
+wget -qO - http://repo.ajenti.org/debian/key | sudo apt-key add -
 echo '
 ## Ajenti
 deb http://repo.ajenti.org/ng/debian main main ubuntu
