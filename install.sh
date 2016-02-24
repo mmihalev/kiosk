@@ -211,7 +211,7 @@ fi
 echo -e "${red}Adding the browser-based system administration tool ${blue}Kiosk web control${red}...${NC}\n"
 if [ "$ajenti_installed" == 0 ]
 then
-sudo wget -q http://repo.ajenti.org/debian/key -O- | apt-key add -
+wget -q0 http://repo.ajenti.org/debian/key | sudo apt-key add -
 echo '
 ## Ajenti
 deb http://repo.ajenti.org/ng/debian main main ubuntu
@@ -220,7 +220,6 @@ sudo apt-get -q=2 update
 sudo apt-get -q=2 install --no-install-recommends ajenti > /dev/null
 sudo service ajenti stop
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/etc/ajenti/config.json -O /etc/ajenti/config.json
-
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/usr/share/pyshared/ajenti/plugins/dashboard/content/js/controls.dashboard.coffee -O /usr/share/pyshared/ajenti/plugins/dashboard/content/js/controls.dashboard.coffee
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/usr/share/pyshared/ajenti/plugins/dashboard/content/js/controls.dashboard.coffee.c.js -O /usr/share/pyshared/ajenti/plugins/dashboard/content/js/controls.dashboard.coffee.c.js
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/usr/share/pyshared/ajenti/plugins/dashboard/layout/dash.xml -O /usr/share/pyshared/ajenti/plugins/dashboard/layout/dash.xml
