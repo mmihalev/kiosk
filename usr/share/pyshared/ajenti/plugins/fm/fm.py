@@ -329,9 +329,10 @@ class Tab (object):
         self.shortpath = os.path.split(path)[1] or '/'
         self.items = []
         for item in os.listdir(unicode(self.path)):
-            itempath = os.path.join(self.path, item)
-            if os.path.exists(itempath):
-                self.items.append(Item(itempath))
+    	    if not item.startswith('.'):
+        	itempath = os.path.join(self.path, item)
+        	if os.path.exists(itempath):
+            	    self.items.append(Item(itempath))
         self.items = sorted(self.items, key=lambda x: (not x.isdir, x.name))
 
         self.breadcrumbs = []

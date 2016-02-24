@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=feh --recursive --quiet --randomize --full-screen --borderless --reload 300 --slideshow-delay 10 --no-menus --auto-zoom --hide-pointer /home/kiosk/Photos/
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=false
+Name[en_US]=2-photos
+Name=2-photos
+Comment[en_US]=
+Comment=

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/kiosk/.kiosk/videos.sh 0
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=false
+Name[en_US]=2-videos
+Name=2-videos
+Comment[en_US]=
+Comment=

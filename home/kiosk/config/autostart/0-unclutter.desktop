@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=unclutter -idle 0.01
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=0-unclutter
+Name=0-unclutter
+Comment[en_US]=
+Comment=

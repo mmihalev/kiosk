@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=chromium-browser --kiosk --no-first-run --disable-infobars --disable-session-crashed-bubble http://localhost:8080
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=false
+Name[en_US]=2-browser
+Name=2-browser
+Comment[en_US]=
+Comment=

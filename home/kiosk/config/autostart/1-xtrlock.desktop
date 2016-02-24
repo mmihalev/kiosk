@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=xtrlock
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=1-xtrlock
+Name=1-xtrlock
+Comment[en_US]=
+Comment=
