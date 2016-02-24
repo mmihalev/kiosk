@@ -39,6 +39,7 @@ php_installed=0
 website_downloaded=0
 additional_software_installed=0
 plymouth_theme_installed=0
+kiosk_mode=0
 hostname_set=0
 kiosk_permissions=0' > stages.cfg
 fi
@@ -342,8 +343,10 @@ fi
 
 
 
-#Choose kiosk mode
+
 echo -e "${green}Choose Kiosk Mode:${NC}"
+if [ "$kiosk_mode" == 0 ]
+then
 PS3="Type 1, 2 or 3:"
 options=("Video mode" "Photo mode" "Browser mode")
 select opt in "${options[@]}"
@@ -394,9 +397,15 @@ do
 		*) echo -e "${red}Invalid Option. Please, choose 1, 2 or 3${NC}";;
 	esac
 done
+sed -i -e 's/kiosk_mode=0/kiosk_mode=1/g' stages.cfg
+else
+	echo -e "${blue}Kiosk mode already set. Skipping...${NC}\n"
+fi
 
 
 
+
+echo -e "${green}Kiosk name...${NC}"
 if [ "$hostname_set" == 0 ]
 then
 kiosk_name=""
