@@ -187,7 +187,7 @@ fi
 echo -e "${red}Installing Kiosk Scripts...${NC}\n"
 if [ "$kiosk_scripts" == 0 ]
 then
-mkidr /home/kiosk/.config/autostart
+mkdir /home/kiosk/.config/autostart
 mkdir /home/kiosk/.kiosk/
 mkdir /home/kiosk/Photos/
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/0-unclutter.desktop -O /home/kiosk/.config/autostart/0-unclutter.desktop
