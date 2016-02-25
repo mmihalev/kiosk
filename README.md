@@ -3,9 +3,9 @@ Turn Ubuntu Desktop into informational Kiosk.
 Kiosk can be controlled via web interface using Ajenti. Ajenti custom plugins can be downloaded from https://github.com/mmihalev/Ajenti-Plugins
 
 It can work in 3 different modes:
-1) Browser mode - Customized Chromium browser will be started at system startup (in full screen). Browser will be running into "kiosk" mode and startup page can be customized.
-2) Videos mode - Mplayer will be started at system startup. Player will play all videos from ~/Videos folder in full screen. 
-3) Photos mode - Slideshow of pictures from ~/Photos folder will be played ad full screen.
+* Browser mode - Customized Chromium browser will be started at system startup (in full screen). Browser will be running into "kiosk" mode and startup page can be customized.
+* Videos mode - Mplayer will be started at system startup. Player will play all videos from ~/Videos folder in full screen. 
+* Photos mode - Slideshow of pictures from ~/Photos folder will be played ad full screen.
 
 Keyboard and mouse will be locked and can be unlocked only with password.
 
