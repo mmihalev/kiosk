@@ -67,7 +67,7 @@ echo -e "${red}Installing 3rd party software...${NC}\n"
 if [ "$additional_software_installed" == 0 ]
 then
 sudo apt-get -q=2 update
-sudo apt-get -q=2 install mplayer lm-sensors mc htop ssh build-essential gcc libx11-dev unclutter feh > /dev/null
+sudo apt-get -q=2 install mplayer lm-sensors mc htop ssh build-essential gcc libx11-dev feh > /dev/null
 sed -i -e 's/additional_software_installed=0/additional_software_installed=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
@@ -193,7 +193,6 @@ then
 mkdir /home/kiosk/.config/autostart
 mkdir /home/kiosk/.kiosk/
 mkdir /home/kiosk/Photos/
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/9-unclutter.desktop -O /home/kiosk/.config/autostart/9-unclutter.desktop
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/1-xtrlock.desktop -O /home/kiosk/.config/autostart/1-xtrlock.desktop
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/2-videos.desktop -O /home/kiosk/.config/autostart/2-videos.desktop
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/2-photos.desktop -O /home/kiosk/.config/autostart/2-photos.desktop
