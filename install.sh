@@ -80,6 +80,7 @@ echo -e "${red}Disabling automatic updates...${NC}\n"
 if [ "$updates_disabled" == 0 ]
 then
 sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/etc/apt/apt.conf.d/10periodic -O /etc/apt/apt.conf.d/10periodic
+sudo chmod 644 /etc/cron.weekly/apt-xapian-index
 sed -i -e 's/updates_disabled=0/updates_disabled=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
