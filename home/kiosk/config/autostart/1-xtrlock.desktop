@@ -4,6 +4,7 @@ Exec=xtrlock
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=5
 Name[en_US]=1-xtrlock
 Name=1-xtrlock
 Comment[en_US]=
