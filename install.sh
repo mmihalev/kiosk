@@ -142,13 +142,14 @@ fi
 
 
 
-echo -e "${red}Personalizing the desktop...${NC}\n"
+echo -e "${red}Personalizing Desktop...${NC}\n"
 if [ "$desktop_personalized" == 0 ]
 then
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/Pictures/desktop-logo.jpg -O /home/kiosk/Pictures/desktop-logo.jpg
-wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/dconf/user -O /home/kiosk/.config/dconf/user
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/desktop-settings -O /home/kiosk/desktop-settings
 #export DISPLAY=:0
-#dconf load / < /home/kiosk/.config/dconf/user_tmp
+dconf load / < /home/kiosk/desktop-settings
+rm -rf desktop-settings
 sed -i -e 's/desktop_personalized=0/desktop_personalized=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
@@ -192,12 +193,12 @@ then
 mkdir /home/kiosk/.config/autostart
 mkdir /home/kiosk/.kiosk/
 mkdir /home/kiosk/Photos/
-sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/0-unclutter.desktop -O /home/kiosk/.config/autostart/0-unclutter.desktop
-sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/1-xtrlock.desktop -O /home/kiosk/.config/autostart/1-xtrlock.desktop
-sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/2-videos.desktop -O /home/kiosk/.config/autostart/2-videos.desktop
-sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/2-photos.desktop -O /home/kiosk/.config/autostart/2-photos.desktop
-sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/2-browser.desktop -O /home/kiosk/.config/autostart/2-browser.desktop
-sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/kiosk/videos.sh -O /home/kiosk/.kiosk/videos.sh
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/9-unclutter.desktop -O /home/kiosk/.config/autostart/9-unclutter.desktop
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/1-xtrlock.desktop -O /home/kiosk/.config/autostart/1-xtrlock.desktop
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/2-videos.desktop -O /home/kiosk/.config/autostart/2-videos.desktop
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/2-photos.desktop -O /home/kiosk/.config/autostart/2-photos.desktop
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/2-browser.desktop -O /home/kiosk/.config/autostart/2-browser.desktop
+wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/kiosk/videos.sh -O /home/kiosk/.kiosk/videos.sh
 sed -i -e 's/kiosk_scripts=0/kiosk_scripts=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
@@ -431,19 +432,20 @@ fi
 
 
 
+#echo -e "${green}Reboot?${NC}"
+#PS3="Type 1 or 2:"
+#options=("Yes" "No")
+#select opt in "${options[@]}"
+#do
+#        case $opt in
+#                Yes )
+#                        sudo reboot ;;
+#                No )
+#                        break ;;
+#        esac
+#done
 
-echo -e "${green}Reboot?${NC}"
-PS3="Type 1 or 2:"
-options=("Yes" "No")
-select opt in "${options[@]}"
-do
-        case $opt in
-                Yes )
-                        sudo reboot ;;
-                No )
-                        break ;;
-        esac
-done
+echo -e "${green}Kiosk installation is now completed. Please, reboot the computer!${NC}"
 
-#Selfdestruct. The installation file will delete himself
+echo -e "${green}This installation file will not self-destruct!${NC}"
 rm -- "$0"
