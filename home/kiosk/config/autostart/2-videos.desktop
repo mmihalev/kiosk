@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Exec=/home/kiosk/.kiosk/videos.sh 0
+Exec=/home/kiosk/.kiosk/videos.sh 50
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=false
