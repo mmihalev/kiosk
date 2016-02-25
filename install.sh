@@ -199,6 +199,7 @@ wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/2-photos.desktop -O /home/kiosk/.config/autostart/2-photos.desktop
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/config/autostart/2-browser.desktop -O /home/kiosk/.config/autostart/2-browser.desktop
 wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/kiosk/videos.sh -O /home/kiosk/.kiosk/videos.sh
+chmod +x /home/kiosk/.kiosk/videos.sh
 sed -i -e 's/kiosk_scripts=0/kiosk_scripts=1/g' stages.cfg
 echo -e "${green}Done!${NC}\n"
 else
