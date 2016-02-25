@@ -447,5 +447,5 @@ fi
 
 echo -e "${green}Kiosk installation is now completed. Please, reboot the computer!${NC}"
 
-echo -e "${green}This installation file will not self-destruct!${NC}"
+echo -e "${green}This installation file will now self-destruct!${NC}"
 rm -- "$0"
