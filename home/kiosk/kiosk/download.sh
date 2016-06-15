@@ -11,9 +11,8 @@ REMOTE_MD5_PATH=/auth/transfers/md5sum
 
 printf "Transfer #${TRANSFER}: Started\n"
 
-wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 ${REMOTE_HOST}/files/htmls/${FILE} -O ${SAVE_DIR}${FILE} &> /dev/null
-
 printf "Transfer #${TRANSFER}: Downloading ${REMOTE_HOST}/files/htmls/${FILE} in ${SAVE_DIR}${FILE}\n"
+wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 ${REMOTE_HOST}/files/htmls/${FILE} -O ${SAVE_DIR}${FILE} &> /dev/null
 
 if [[ "$?" != 0 ]]; then
     STATUS="Error downloading file ${REMOTE_HOST}/files/htmls/${FILE}"

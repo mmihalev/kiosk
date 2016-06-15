@@ -20,7 +20,9 @@ if( isset($_REQUEST["file"]) && isset($_REQUEST["transfer"]) && trim($_REQUEST["
     $file = trim($_REQUEST["file"]);
     $transfer = (int) trim($_REQUEST["transfer"]);
 
-    exec("/home/kiosk/download.sh $file, $transfer");
+    exec("/home/kiosk/download.sh $file $transfer");
+    exec('bash -c "exec nohup setsid /home/kiosk/download.sh $file $transfer > /dev/null 2>&1 &"');
+    exit("ok");
 }else{
     die("Wrong params");
 }

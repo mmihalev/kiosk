@@ -293,20 +293,20 @@ fi
 
 
 # Website content
-echo -e "${red}Downloading ${blue}Website content${red}...${NC}\n"
+echo -e "${red}Downloading ${blue}Kiosk Admin control scripts${red}...${NC}\n"
 if [ "$website_downloaded" == 0 ]
 then
-sudo wget https://dl.dropboxusercontent.com/u/47604729/kiosk_html.zip -O kiosk_html.zip
-sudo unzip -qq kiosk_html.zip
-sudo mv kiosk_html/* /home/kiosk/html/
-sudo chown -R kiosk.kiosk /home/kiosk/html/*
-sudo rm -rf kiosk_html*	
+sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/kiosk/download.php -O /home/kiosk/download.php
+sudo wget -q https://raw.githubusercontent.com/mmihalev/kiosk/ubuntu-desktop-v2/home/kiosk/kiosk/download.sh -O /home/kiosk/download.sh
+sudo chown kiosk.kiosk /home/kiosk/download.php
+sudo chown kiosk.kiosk /home/kiosk/download.sh
+sudo chmod +x /home/kiosk/download.sh
 sudo service nginx restart
 sudo service php5-fpm restart
 sed -i -e 's/website_downloaded=0/website_downloaded=1/g' stages.cfg
 echo -e "\n${green}Done!${NC}\n"
 else
-	echo -e "${blue}Website content already downloaded. Skipping...${NC}\n"
+	echo -e "${blue}Kiosk Admin control scripts already downloaded. Skipping...${NC}\n"
 fi	
 
 
