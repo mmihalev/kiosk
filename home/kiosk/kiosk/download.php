@@ -1,6 +1,6 @@
 <?php
 
-$allowed_ips = array('212.50.20.44', '10.0.2.15', '10.4.4.58');
+$allowed_ips = array('212.50.20.44', '78.83.221.216', '10.0.2.15', '10.4.4.58');
 
 if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
     $ip = $_SERVER['HTTP_CLIENT_IP'];
@@ -20,8 +20,7 @@ if( isset($_REQUEST["file"]) && isset($_REQUEST["transfer"]) && trim($_REQUEST["
     $file = trim($_REQUEST["file"]);
     $transfer = (int) trim($_REQUEST["transfer"]);
 
-    exec("/home/kiosk/download.sh $file $transfer");
-    exec('bash -c "exec nohup setsid /home/kiosk/download.sh $file $transfer > /dev/null 2>&1 &"');
+    exec("/home/kiosk/download.sh $file $transfer > /dev/null &");
     exit("ok");
 }else{
     die("Wrong params");

@@ -4,7 +4,7 @@ exec 1> >(logger -s -t $(basename $0)) 2>&1
 FILE=$1
 TRANSFER=$2
 
-SAVE_DIR=/home/kiosk/html/
+SAVE_DIR=/home/kiosk/
 REMOTE_HOST=http://212.50.20.44
 REMOTE_REPORT_PATH=/auth/transfers/report
 REMOTE_MD5_PATH=/auth/transfers/md5sum
@@ -17,7 +17,7 @@ wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 ${REM
 if [[ "$?" != 0 ]]; then
     STATUS="Error downloading file ${REMOTE_HOST}/files/htmls/${FILE}"
     txt="hostname=${HOSTNAME}&transfer=${TRANSFER}&status=${STATUS}"
-    response=$(curl --write-out %{http_code} --silent --output /dev/null -X POST -d "$txt" ${REMOTE_HOST}${REMOTE_REPORT_PATH})
+    response=$(curl -X POST -d "$txt" ${REMOTE_HOST}${REMOTE_REPORT_PATH})
 
     printf "Transfer #${TRANSFER}: Failed. ${STATUS}\n"
 else
@@ -30,10 +30,11 @@ else
     if [[ "$remote_md5sum" == "$local_md5sum" ]]; then
         printf "Transfer #${TRANSFER}: Checksums matched\n"
 
-        rm -rf ${SAVE_DIR}
-        unzip -q -o ${SAVE_DIR}${FILE} -d ${SAVE_DIR}
+        rm -rf ${SAVE_DIR}html/*
+        unzip -q -o ${SAVE_DIR}${FILE} -d ${SAVE_DIR}html/
 
         if [[ $? == 0 ]] ; then
+            rm -rf ${SAVE_DIR}${FILE}
             printf "Transfer #${TRANSFER}: Unzip succeeded\n"
 
             printf "Transfer #${TRANSFER}: Notifying ${REMOTE_HOST}${REMOTE_REPORT_PATH}\n"
@@ -64,4 +65,3 @@ else
 
         printf "Transfer #${TRANSFER}: Failed. ${STATUS}\n"
     fi
-fi
