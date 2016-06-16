@@ -48,7 +48,7 @@ else
             printf "Rebooting after 5 seconds...\n"
 
             sleep 5
-            #sudo /sbin/reboot
+            sudo /sbin/reboot
 
         else
             STATUS="Unzip failed. Can't unzip from ${SAVE_DIR}${FILE} to ${SAVE_DIR}"
