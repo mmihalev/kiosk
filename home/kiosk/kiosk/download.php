@@ -12,7 +12,7 @@ if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 
 if(!in_array($ip, $allowed_ips))
 {
-    die("Access denied");
+    die("Access from $ip is denied");
 }
 
 if( isset($_REQUEST["file"]) && isset($_REQUEST["transfer"]) && trim($_REQUEST["file"]) !== "" && trim($_REQUEST["transfer"]) !== "" )
