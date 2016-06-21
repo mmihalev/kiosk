@@ -65,3 +65,4 @@ else
 
         printf "Transfer #${TRANSFER}: Failed. ${STATUS}\n"
     fi
+fi
