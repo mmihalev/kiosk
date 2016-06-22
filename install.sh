@@ -303,6 +303,7 @@ sudo chown root.root /etc/sudoers
 sudo chown kiosk.kiosk /home/kiosk/download.php
 sudo chown kiosk.kiosk /home/kiosk/download.sh
 sudo chmod +x /home/kiosk/download.sh
+touch /home/kiosk/html/index.html
 sudo service nginx restart
 sudo service php5-fpm restart
 sed -i -e 's/website_downloaded=0/website_downloaded=1/g' stages.cfg
